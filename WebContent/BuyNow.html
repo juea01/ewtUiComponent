@@ -1,0 +1,172 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Demo: Using _TemplatedMixin</title>
+	<link rel="stylesheet" href="dijit/themes/claro/claro.css" media="screen">
+	<link rel="stylesheet" href="dojox/image/resources/image.css" media="screen">
+	<link rel="stylesheet" href="dijit/themes/tundra/tundra.css" media="screen">
+	<link rel="stylesheet" href="widget/css/SomeWidget.css" media="screen">
+	<link rel="stylesheet" href="widget/css/Animation.css" media="screen">
+	
+		<script>dojoConfig = {async: false, parseOnLoad: true}</script>
+		<!-- This is for rotating banner -->
+		<script src="dojo/dojo.js"></script>
+		
+	
+	<!-- This is for header  --> 
+		<script>
+			require([
+				"dojo/parser",
+				"widget/ContainerWidget",
+				"dijit/form/Button",
+			], function(parser) {
+				// Invoke the dojo/parser
+				parser.parse();
+			});
+		</script>
+		
+																
+	
+	
+		
+		<!-- This is for footer  --> 
+		<script>
+			require([
+				"widget/FooterWidget",
+			], function(parser) {
+				// Invoke the dojo/parser
+				parser.parse();
+			});
+		</script>
+		
+				
+	</head>
+	<body class="claro">
+	<div id="container">
+	<!-- This is for header -->
+	<div data-dojo-type="widget/ContainerWidget">
+		<div class="logo_div">
+			<div>EWorldTradeLogo</div>
+		</div>
+		<div class="search_div">
+			<input type="text" data-dojo-type="dijit/form/TextBox" class="searchBox"></input>
+			<button data-dojo-type="dijit/form/Button" ><img src="resources/search.png" class="searchButton" height="30" width="50"/></button>
+		</div>
+		<div class="login_Supplier_Wrapper_div">
+		  <div class="listDeal_div">
+			<a href="ListDeal.html">List Deal</a>
+	      </div>
+		  <div class="login_div">
+			<a href="Login.html">Login In</a>  | <a href="Registration.html">Join Free</a>
+		  </div>
+		</div>
+		
+	</div>
+	
+<div class="bodyContentWidget">	
+<!-- This is for BuyNow -->
+<div class="buyNowWidgetImage">
+<div data-dojo-id="imageItemStore" data-dojo-type="dojo.data.ItemFileReadStore"></div>
+<div id="gallery1" data-dojo-type="dojox.image.Gallery"></div>
+</div>
+<div id="buyNowContainer"></div>
+ 
+ 
+ <script>
+require(["dojo","dijit/dijit","dojo/parser","dojo/data/ItemFileReadStore","dojox/image/Gallery",
+         "dojo/request","dojo/dom","dojo/_base/array", "widget/BuyNowWidget", "widget/StoreState", "dojo/domReady!"],
+function (dojo, dijit, parser, ifrs, Gallery,request, dom, arrayUtil, BuyNowWidget, StoreState) {
+	
+	StoreState.storePageUrl(window.location.href);
+	
+	 var productId = sessionStorage.getItem('productId');
+	 request ("http://localhost:8080/EWTRestServices/rest/DealServices/deal?dealId="+productId, {
+		 handleAs: "json"
+	 }).then(function(deal){
+		 var buyNowContainer = dom.byId("buyNowContainer");
+	     var widget = new BuyNowWidget(deal).placeAt(buyNowContainer);	     
+
+         // Define the attribute names used to access the items in the data store
+         parser.parse();
+         
+         var itemNameMap = {
+             imageThumbAttr: "thumb",
+             imageLargeAttr: "large"
+         };
+
+         // Define the request, with no query, and a count of 20, so 20 items will be
+         // requested with each request
+         var request = {
+             query: {},
+             count: 20
+         };
+          
+          
+          var urls = deal.dealImages;
+          var imageUrls = urls.toString().split(",");   
+          
+     	  // Build an array of image items for the data store
+          var imageData = {};
+          imageData.items = [];
+          for (var i=0; i< imageUrls.length; i++) {
+            var newItem = {};
+            newItem.thumb = imageUrls[i];
+            newItem.large = imageUrls[i]; 
+            newItem.title = "Image";  
+            imageData.items.push(newItem);
+          }
+           
+          // Initialize the data store
+          var imageItemStore = new dojo.data.ItemFileReadStore({
+            identifier: 'title',
+            label: 'Images',
+            data: imageData
+          }); 
+           
+          dijit.byId('gallery1').setDataStore(imageItemStore, request, itemNameMap);           
+		 
+	 });
+	 
+ });
+
+</script>
+
+	 
+	
+</div>
+	<!-- This is for footer -->
+	<div data-dojo-type="widget/FooterWidget">
+		<div class="footer_group1">
+			<div>About EWorldTrade</div>
+			<div class="vertical_space">  </div>
+			<div>Careers</div>
+		</div>
+		
+		<div class="footer_group2">
+			<div>Sell on EWorldTrade</div>
+			<div class="vertical_space">  </div>
+			<div>Own Store on EWorldTrade</div>
+		</div>
+		
+		<div class="footer_group3">
+			<div>Advertise</div>
+			<div class="vertical_space">  </div>
+			<div>Become Supplier</div>
+		</div>
+		
+		<div class="footer_group4">
+			<div>EWorldTrade Policy</div>
+			<div class="vertical_space">  </div>
+			<div>Return Goods</div>
+			<div class="vertical_space">  </div>
+			<div>Dispute Center</div>
+			<div class="vertical_space">  </div>
+			<div>Help</div>
+		</div>
+	</div>
+		
+</div>		
+		
+	</body>
+</html>

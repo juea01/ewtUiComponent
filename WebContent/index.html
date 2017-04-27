@@ -1,0 +1,252 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Demo: Using _TemplatedMixin</title>
+	<link rel="stylesheet" href="dijit/themes/claro/claro.css" media="screen">
+	<link rel="stylesheet" href="widget/css/SomeWidget.css" media="screen">
+	<link rel="stylesheet" href="widget/css/Animation.css" media="screen">
+	
+		<script>dojoConfig = {async: true, parseOnLoad: true}</script>
+		<script src="dojo/dojo.js"></script>
+		<script>
+	require(["dojo","dojox/widget/AutoRotator", "dojox/widget/rotator/Slide","widget/StoreState",
+		 		"dojo/domReady!"], function(dojo,AutoRotator,Slide,StoreState) {
+		<!-- This is for rotating banner -->
+	    new dojox.widget.AutoRotator(
+	        {
+	            transition: "dojox.widget.rotator.slideRight",
+	            transitionParams: "quick:true,continuous:true",
+	            duration: 2500,
+	            panes: [
+	                { className: "pane pane0", innerHTML: "<img src='widget/images/Add1.jpg' height='180px' width='100%'/>" },
+	                { className: "pane pane1", innerHTML: "<img src='widget/images/Add2.jpg' height='180px' width='100%'/>" },
+	                { className: "pane pane2", innerHTML: "<img src='widget/images/Add3.jpg' height='180px' width='100%'/>" }
+	            ]
+
+	        },
+	        dojo.byId("myAutoRotator")
+	    );
+	    
+	    StoreState.storePageUrl(window.location.href);
+	});
+	</script>
+	
+	<!-- This is for header  --> 
+		<script>
+			require([
+				"dojo/parser",
+				"widget/ContainerWidget",
+				"dijit/form/Button",
+			], function(parser) {
+				// Invoke the dojo/parser
+				parser.parse();
+			});
+		</script>
+		
+		
+		
+		<!-- This is for EWTAnimation  --> 
+		<script>
+			require([
+				"widget/EWTAnimationWidget",
+			], function(parser) {
+				// Invoke the dojo/parser
+				parser.parse();
+			});
+		</script>
+			
+	
+	 
+	
+		
+		
+		
+		
+		
+	
+	
+		
+		<!-- This is for footer  --> 
+		<script>
+			require([
+				"widget/FooterWidget",
+			], function(parser) {
+				// Invoke the dojo/parser
+				parser.parse();
+			});
+		</script>
+		
+				
+	</head>
+	<body class="claro">
+	<div id="container">
+	<!-- This is for header -->
+	<div data-dojo-type="widget/ContainerWidget">
+		<div class="logo_div">
+			<div>EWorldTradeLogo</div>
+		</div>
+		<div class="search_div">
+			<input type="text" data-dojo-type="dijit/form/TextBox" class="searchBox"></input>
+			<button data-dojo-type="dijit/form/Button" ><img src="resources/search.png" class="searchButton" height="30" width="50"/></button>
+		</div>
+		<div class="login_Supplier_Wrapper_div">
+		  <div class="listDeal_div">
+			<a href="ListDeal.html">List Deal</a>
+	      </div>
+		  <div class="login_div">
+			<a href="Login.html">Login In</a>  | <a href="Registration.html">Join Free</a>
+		  </div>
+		</div>
+		
+	</div>
+	
+	<!-- This is for Rotating banner -->
+	<div id="myAutoRotator" class="rotator"></div>
+	
+	<div class="bodyContentWidget">
+	<!-- This is for EWT Animation -->
+	<div data-dojo-type="widget/EwtAnimationWidget">
+	<div id="eworldTrade"><h1 >EWORLDTRADE </h1></div>
+	<div id="carrot"><img alt="the carrot" height="30" width="30" src="widget/images/carrot.png"></img></div>
+	<div id="money"><img alt="the money" height="30" width="30" src="widget/images/money.png"></img></div>	
+	<div id="buyAndSell"><h3>Where you buy and sell!</h3></div>
+	
+	<div id="rabbit"><img alt="the rabbit" height="50" width="50" src="widget/images/rabbit.jpg"></img></div>
+	</div>
+	
+	<!-- This is for EWT Animation
+	Please note that bean of light need to be created and
+some animation need to be added to rabbit and also adjust color, images etc to be more professional -->
+<script type="text/javascript">
+	var carrot = document.querySelector("#carrot");
+	var money = document.querySelector("#money");
+	var eworldTrade = document.querySelector("#eworldTrade");
+	var buyAndSell = document.querySelector("#buyAndSell");
+	var currentPos = 230;
+	var currentEWorldTradePos = 0;
+	var currentOpacity = 1;
+	var runCarrot = true;
+	var runMoney = false;
+	var runEworldTrade = false;
+	var hasRunEworldTrade = false;
+	
+	var requestAnimationFrame = window.requestAnimationFrame || 
+    window.mozRequestAnimationFrame || 
+    window.webkitRequestAnimationFrame || 
+    window.msRequestAnimationFrame;
+	
+	
+	 function moveThing() {
+		
+		if (runCarrot) {
+			currentPos -= 2;
+			currentOpacity -= 0.01;
+			carrot.style.top = currentPos + "px";
+			carrot.style.opacity = currentOpacity; 
+		}
+		
+		 if (runMoney) {	 
+			currentPos +=2;
+			currentOpacity += 0.01;
+			money.style.top = currentPos + "px";
+			money.style.opacity = currentOpacity;			
+		} 
+		 
+		  if (runEworldTrade) { 
+			 currentOpacity -= 0.02;
+			 currentEWorldTradePos +=2;
+			 eworldTrade.style.top = currentEWorldTradePos + "px";
+			 money.style.opacity = currentOpacity;
+			 rabbit.style.opacity = currentOpacity;
+			 
+		 }  
+		
+		if (Math.abs(currentPos) <= 0) {
+			currentPos = 10;
+			currentOpacity = 0;
+			carrot.style.opacity = currentOpacity; 
+			runCarrot = false;
+			runMoney = true;
+		}
+		
+		 if (Math.abs(currentPos) >= 200 && runCarrot == false) {
+			runCarrot = false;
+			runMoney = false;
+		}
+		 
+		 
+		 if (!runCarrot && !runMoney && !hasRunEworldTrade){
+			 runEworldTrade = true;
+		 }
+		 
+		 
+		 if (Math.abs(currentEWorldTradePos) >= 160 && !hasRunEworldTrade) {
+			 hasRunEworldTrade = true;
+			 runEworldTrade = false;
+			 currentOpacity = 0;
+			} 
+		 
+		 if(hasRunEworldTrade && currentOpacity <=1){
+			 currentOpacity += 0.01;
+			 buyAndSell.style.opacity = currentOpacity;
+		 }
+		 
+		requestAnimationFrame(moveThing);
+	}
+	
+moveThing();  
+</script>
+
+<!-- This is for deals -->
+	<div data-dojo-type="widget/DealsWidget">
+		<div><h1>This is for deals</h1></div>
+		<div><h1>This is for deals</h1></div>
+		<div><h1>This is for deals</h1></div>
+		<div><h1>This is for deals</h1></div>
+		<div><h1>This is for deals</h1></div>
+	</div>
+	
+<!-- This is for deals -->
+<div data-dojo-type="widget/OurStoreWidget">
+	<div><h1>This is for our Store</h1></div>
+</div>
+	
+	
+	
+</div>	
+	<!-- This is for footer -->
+	<div data-dojo-type="widget/FooterWidget">
+		<div class="footer_group1">
+			<div>About EWorldTrade</div>
+			<div class="vertical_space">  </div>
+			<div>Careers</div>
+		</div>
+		
+		<div class="footer_group2">
+			<div>Sell on EWorldTrade</div>
+			<div class="vertical_space">  </div>
+			<div>Own Store on EWorldTrade</div>
+		</div>
+		
+		<div class="footer_group3">
+			<div>Advertise</div>
+			<div class="vertical_space">  </div>
+			<div>Become Supplier</div>
+		</div>
+		
+		<div class="footer_group4">
+			<div>EWorldTrade Policy</div>
+			<div class="vertical_space">  </div>
+			<div>Return Goods</div>
+			<div class="vertical_space">  </div>
+			<div>Dispute Center</div>
+			<div class="vertical_space">  </div>
+			<div>Help</div>
+		</div>
+	</div>
+		
+</div>		
+		
+	</body>
+</html>

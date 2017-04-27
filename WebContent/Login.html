@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Demo: Using _TemplatedMixin</title>
+	<link rel="stylesheet" href="dijit/themes/claro/claro.css" media="screen">
+	<link rel="stylesheet" href="widget/css/SomeWidget.css" media="screen">
+	<link rel="stylesheet" href="widget/css/Animation.css" media="screen">
+	
+		<script src="dojo/dojo.js" data-dojo-config="async: true, parseOnLoad: true"></script> 
+	
+	<!-- This is for header  --> 
+		<script>
+			require([
+				"dojo/parser",
+				"widget/ContainerWidget",
+				"dijit/form/Button",
+			], function(parser) {
+				// Invoke the dojo/parser
+				parser.parse();
+			});
+		</script>
+		
+																
+		<!-- This is for footer  --> 
+		<script>
+			require([
+				"widget/FooterWidget",
+			], function(parser) {
+				// Invoke the dojo/parser
+				parser.parse();
+			});
+		</script>
+		
+				
+	</head>
+	<body class="claro">
+	<div id="container">
+	<!-- This is for header -->
+	<div data-dojo-type="widget/ContainerWidget">
+		<div class="logo_div">
+			<div>EWorldTradeLogo</div>
+		</div>
+		<div class="search_div">
+			<input type="text" data-dojo-type="dijit/form/TextBox" class="searchBox"></input>
+			<button data-dojo-type="dijit/form/Button" ><img src="resources/search.png" class="searchButton" height="30" width="50"/></button>
+		</div>
+		<div class="login_Supplier_Wrapper_div">
+		  <div class="listDeal_div">
+			<a href="ListDeal.html">List Deal</a>
+	      </div>
+		  <div class="login_div">
+			<a href="Login.html">Login In</a>  | <a href="Registration.html">Join Free</a>
+		  </div>
+		</div>
+		
+	</div>
+	
+<div class="bodyContentWidget">	
+<div id="resultDiv">
+<div><label>Server Message:</label><span id="svrMessage"></span></div>
+</div>
+</div>
+ <form id="formNode">
+  <div><label>Username: </label><input type="text" name="userName" /></div>
+			<div><label>Password: </label><input type="password" name="password" /></div>
+  <button class="button" type="submit">Submit</button>
+ </form>
+ <script>
+ 
+ require(["dojo/dom", "dojo/on", "dojo/request", "dojo/dom-form", "dojo/parser",
+  		"dojox/form/BusyButton",
+  		"dojo/domReady!"], function(dom, on, request, domForm) {
+  		
+  		
+  		var form = dom.byId("formNode");
+  		 
+  		 dojo.connect(form,"submit", function(event){
+  			//prevent the page form navigating after submit
+  			event.stopPropagation();
+  			event.preventDefault();
+  			
+  			// Post the data to the server
+  			request.post("http://localhost:8080/EWTRestServices/rest/UserServices/validUser", {
+  				
+  				data: dojo.formToJson("formNode"),
+  				
+  				timeout: 5000
+  				
+  			}).then(function(response){
+  				console.log(response);
+  				sessionStorage.setItem('userName',response);
+  				var url = sessionStorage.getItem('previousPageUrl');
+  				console.log("This is URl"+url);
+  				window.location.replace(url);
+  			},function(error){
+  				console.log( error);
+  				dom.byId('svrMessage').innerHTML = "Status Code: " + error.response.status +" Message: " + error.response.data;
+  			});
+  			
+  			
+  		}); 
+  		 
+  		 
+  	
+  	}
+  	);
+ 
+
+ </script>
+	<!-- This is for footer -->
+	<div data-dojo-type="widget/FooterWidget">
+		<div class="footer_group1">
+			<div>About EWorldTrade</div>
+			<div class="vertical_space">  </div>
+			<div>Careers</div>
+		</div>
+		
+		<div class="footer_group2">
+			<div>Sell on EWorldTrade</div>
+			<div class="vertical_space">  </div>
+			<div>Own Store on EWorldTrade</div>
+		</div>
+		
+		<div class="footer_group3">
+			<div>Advertise</div>
+			<div class="vertical_space">  </div>
+			<div>Become Supplier</div>
+		</div>
+		
+		<div class="footer_group4">
+			<div>EWorldTrade Policy</div>
+			<div class="vertical_space">  </div>
+			<div>Return Goods</div>
+			<div class="vertical_space">  </div>
+			<div>Dispute Center</div>
+			<div class="vertical_space">  </div>
+			<div>Help</div>
+		</div>
+	</div>
+		
+</div>		
+		
+	</body>
+</html>

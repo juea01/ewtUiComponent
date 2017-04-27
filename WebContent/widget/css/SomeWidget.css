@@ -1,0 +1,285 @@
+@CHARSET "UTF-8";
+
+/*
+For header
+*/
+.headerWidget {
+	border: 1px solid black;
+	width: 100%;
+	height: 170px;
+	overflow:hidden;
+	align:center;
+	padding:10px;
+	}
+	
+.logo_div{
+  font-size: 40px;
+  width: 25%;
+  float:left;
+  margin-top: 0.5em;
+}
+
+
+.search_div{
+  margin-left: 3%;
+  margin-top: 70px;
+  width: 35%;
+  float:left;
+}	
+
+.searchButton{
+	width:100%;
+	height:30px;
+}
+
+
+.searchBox{
+  
+  width:80%;
+  height:35px;
+}	
+
+.login_Supplier_Wrapper_div{
+	float:left;
+	margin-left:15%;
+	width:10%;
+	margin-top:15px;
+	vertical-align:top;
+}
+.login_div {
+	display:inline-block;
+	vertical-align:top;	
+}
+.listDeal_div {
+	display:inline-block;
+	vertical-align:top;
+	margin-left:5%;	
+}
+
+/*
+Body Content Widget
+*/
+.bodyContentWidget {
+	padding-bottom:170px;
+	width: 100%;
+	height:100%;
+	overflow:hidden;
+	align:center;
+	}
+			
+/*
+Deal Widget
+*/
+
+.dealsWidget {
+	border: 1px solid black;
+	width: 30%;
+	height: 400px;
+	margin-left: 3%;
+	margin-top: 1%;
+	margin-bottom: 1%;
+	overflow:hidden;
+	background-color: #fb9f18;
+	float:left;
+	}
+.dealsWidget h3 {
+		font-size: 1.5em;
+		font-style: italic;
+		text-align: center;
+		margin: 0px;
+	}
+
+
+/*
+Buy Now Widget
+*/
+
+.buyNowWidget {
+	width: 40%;
+	padding: 10px;
+	overflow:hidden;
+	float: left;
+	margin-left:3%;
+	}
+	
+	
+	.buyNowWidgetImage {
+		float: left;
+		width: 40%;
+		overflow:hidden;
+		margin-left:3%;
+	}
+
+/*
+Our Store Widget
+*/		
+.ourStoreWidget {
+	border: 1px solid black;
+	width: 30%;
+	height: 400px;
+	margin-left: 3%;
+	overflow:hidden;
+	background-color: #fb9f18;
+	float:left;
+}
+
+/*
+Pagination
+*/
+#pagination div {
+	position: relative;
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color 3s;
+}
+
+#pagination div.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#pagination div:hover:not(.active) {
+	background-color: #ddd;
+	}
+
+#pagination div:hover {
+	cursor:pointer;
+}
+
+#paginationWrapper {
+	clear:left;
+	margin-left:30%;
+}
+
+/*
+For footer
+*/
+
+.footerWidget {
+	position: absolute;
+	bottom: 0;
+	left:0;
+	width: 100%;
+	height: 170px;
+	border: 1px solid green;
+	}
+	
+	.footer_group1{
+	position:absolute;
+	display:inline-block;
+	left:10%;
+	top:10%;
+	width:20%;
+	height:100%;
+	bottom:0;
+	}
+
+	.footer_group2{
+	position:absolute;
+	display:inline-block;
+	left:30%;
+	top:10%;
+	width:20%;
+	height:100%;
+		}
+	
+	.footer_group3{
+	position:absolute;
+	display:inline-block;
+	left:50%;
+	top:10%;
+	width:20%;
+	height:100%;
+	}
+	
+	.footer_group4{
+	position:absolute;
+	display:inline-block;
+	left:70%;
+	top:10%;
+	width:20%;
+	height:100%;
+	}
+	
+	.vertical_space{
+	padding-top:5%;
+	}
+
+html,
+body{
+	margin:0;
+	padding:0;
+	height:100%;
+	
+}
+
+#container{
+	min-height:100%;
+	position: relative;
+}
+
+	
+/*
+Button
+*/
+.button {
+	background-color: Transparent;
+    background-color: #def; 
+    display: inline-block;
+    border: 1px solid #787878;
+    font-size: 16px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+    transition: background-color 3s;
+}
+
+.button:hover {
+	cursor:pointer;
+	box-shadow:0px 15px 5px #9eb7ef inset;
+}
+
+
+/*
+Response Message
+*/
+#response {
+	font-size: 16px;
+	color: green;
+}
+
+
+
+/*
+Hyper link
+*/
+a:link{
+	text-decoration:none;
+	font-weight: bold;
+	color:blue;
+}
+
+a:visited{
+	text-decoration:none;
+	font-weight: bold;
+	color:#f0f;
+}
+
+a:hover{
+	text-decoration:underline;
+	font-weight: bold;
+	background-color: blue;
+	color:#fff;
+}
+
+a:active{
+	text-decoration:underline;
+	font-weight: bold;
+	background-color: black;
+	color:white;
+}
+
+
+
+	

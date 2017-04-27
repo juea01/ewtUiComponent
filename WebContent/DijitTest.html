@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Demo: Custom Widget</title>
+<link rel="stylesheet" href="widget/css/AuthorhWidget.css" media="screen">
+</head>
+<body>
+<h1>This is dijit test</h1>
+<script src="dojo/dojo.js"></script> 
+
+ <div id="authorContainer"></div>
+ 
+ 
+ <script>
+ require(["dojo/request","dojo/dom","dojo/_base/array", "widget/AuthorhWidget", "dojo/domReady!"],
+function (request, dom, arrayUtil, AuthorhWidget) {
+	
+	 request ("data/authors.json", {
+		 handleAs: "json"
+	 }).then(function(authors){
+		 var authorContainer = dom.byId("authorContainer");
+		 
+		 arrayUtil.forEach(authors, function(author){
+			 var widget = new AuthorhWidget(author).placeAt(authorContainer);
+		 });
+	 });
+	 
+ });
+ 
+ 
+ </script>
+
+</body>
+</html>
