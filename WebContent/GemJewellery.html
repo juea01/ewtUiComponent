@@ -2,25 +2,17 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Demo: Using _TemplatedMixin</title>
-	<link rel="stylesheet" href="dojo/resources/dojo.css" media="screen">	
+		<title>Gem and Jewellery</title>
 	<link rel="stylesheet" href="dijit/themes/claro/claro.css" media="screen">
-	<link rel="stylesheet" href="dojox/grid/enhanced/resources/claro/EnhancedGrid.css" media="screen">
-	<link rel="stylesheet" href="dojox/grid/enhanced/resources/EnhancedGrid_rtl.css" media="screen">
 	<link rel="stylesheet" href="widget/css/SomeWidget.css" media="screen">
 	<link rel="stylesheet" href="widget/css/Animation.css" media="screen">
-	<style>
-	#grid{
-	width: 43em;
-	height: 20em;
-	}
-	</style>
+	
 		<script>dojoConfig = {async: true, parseOnLoad: true}</script>
-		<!-- This is for rotating banner -->
 		<script src="dojo/dojo.js"></script>
 		<script>
-	require(["dojo","dojox/widget/AutoRotator", "dojox/widget/rotator/Slide",
-		 		"dojo/domReady!"], function() {
+	require(["dojo","dojox/widget/AutoRotator", "dojox/widget/rotator/Slide","widget/StoreState",
+		 		"dojo/domReady!"], function(dojo,AutoRotator,Slide,StoreState) {
+		<!-- This is for rotating banner -->
 	    new dojox.widget.AutoRotator(
 	        {
 	            transition: "dojox.widget.rotator.slideRight",
@@ -35,6 +27,8 @@
 	        },
 	        dojo.byId("myAutoRotator")
 	    );
+	    
+	    StoreState.storePageUrl(window.location.href);
 	});
 	</script>
 	
@@ -97,7 +91,7 @@
 			<button data-dojo-type="dijit/form/Button" ><img src="resources/search.png" class="searchButton" height="30" width="50"/></button>
 		</div>
 		<div class="login_Supplier_Wrapper_div">
-		  <div class="login_div">
+		  <div class="listDeal_div">
 			<a href="ListDeal.html">List Deal</a>
 	      </div>
 		  <div class="login_div">
@@ -106,81 +100,38 @@
 		</div>
 		
 	</div>
-	
-	<!-- This is for Rotating banner -->
-	<div id="myAutoRotator" class="rotator"></div>
+
 	
 	<div class="bodyContentWidget">
-	<script>
-require(["dojo","dojox/grid/EnhancedGrid","dojox/grid/enhanced/plugins/Pagination","dojo/data/ItemFileWriteStore","dojo/domReady!"],
-function () {
-	/*set up data store*/
-    var data = {
-      identifier: 'id',
-      items: []
-    };
-    var data_list = [
-      { col1: "normal", col2: false, col3: 'But are not followed by two hexadecimal', col4: 29.91},
-      { col1: "important", col2: false, col3: 'Because a % sign always indicates', col4: 9.33},
-      { col1: "important", col2: false, col3: 'Signs can be selectively', col4: 19.34}
-    ];
-    var rows = 200;
-    for(var i=0, l=data_list.length; i<rows; i++){
-      data.items.push(dojo.mixin({ id: i+1 }, data_list[i%l]));
-    }
-    var store = new dojo.data.ItemFileWriteStore({data: data});
-
-    /*set up layout*/
-    var layout = [
-      {name: 'Column 1', field: 'id'},
-      {name: 'Column 2', field: 'col2'},
-      {name: 'Column 3', field: 'col3', width: "230px"},
-      {name: 'Column 4', field: 'col4'}
-    ];
-
-    /*create a new grid:*/
-    var grid = new dojox.grid.EnhancedGrid({
-        id: 'grid',
-        store: store,
-        structure: layout,
-        rowSelector: '20px',
-        plugins: {
-          pagination: {
-              pageSizes: ["25", "50", "100", "All"],
-              description: true,
-              sizeSwitch: true,
-              pageStepper: true,
-              gotoButton: true,
-                      /*page step to be displayed*/
-              maxPageStep: 4,
-                      /*position of the pagination bar*/
-              position: "bottom"
-          }
-        }
-    }, document.createElement('div'));
-
-    /*append the new grid to the div*/
-    dojo.byId("gridDiv").appendChild(grid.domNode);
-
-    /*Call startup() to render the grid*/
-    grid.startup();	
-	
-	 
- });
-
-</script>
+	<a href="http://localhost:8080/EWTClientUi/GemJewelleryListing.html"><div class="sideBarWidget"><p>Are you interested in buying world class quality gems and jewelleries? 
+	Please check out our gems and jewelleries listings.</p>
+	<div class="movingArrow"><img src="resources/Arrow50.png"></div></div>
+	</a>
+	<div class = "middlealigned">
+	<h2> Gems and Jewellery</h2>
+	<p>
+	There are many different types of gems available in MYANMAR especially in MOGOK, a city located in MANDALAY region, and LONKIN Township from KACHIN state.
+	You can find one of the best quality rubies and sapphires in MOGOK. Best qualities Jades are primarily found in LONKIN.
+	</p>
+	<br/>
+	<h3>Ruby</h3>
+	<p><img class="floatImageLeft" src="resources/Ruby_gem.JPG"/>Generally ruby has pink to blood red color. These stones have always been held in high esteem in Asian countries. There is believe that owning rubies
+	,especially high end quality ones, will bring you luck and fortune.</p>
+	<br/><br/>
+	<h3>Sapphire</h3>
+	<p><img class="floatImageLeft" src="resources/Sapphire.JPG"/>Not like ruby, sapphire is blue colored stone. Sapphire is really desirable due to it's color. Sapphire and diamond rings, necklaces are so 
+	attractive that you would just feel that you must own one and it is especially true for ladies.</p>
 	</div>
-
-
-<div id="gridDiv"> </div>	
 	
-</div>	
+	</div>	
 	<!-- This is for footer -->
 	<div data-dojo-type="widget/FooterWidget">
 		<div class="footer_group1">
 			<div><a href="AboutUs.html">About EWorldTrade</a></div>
 			<div class="vertical_space">  </div>
 			<div>Careers</div>
+			<div class="vertical_space"></div>
+			<div><a href="https://icons8.com/web-app/22230/Arrow">Arrow icon credits</a></div>
 		</div>
 		
 		<div class="footer_group2">

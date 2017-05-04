@@ -10,11 +10,11 @@ define ([
 "dojo/on",
 "dijit/_WidgetBase",
 "dijit/_TemplatedMixin",
-"dojo/text!./templates/DealsWidget.html"
+"dojo/text!./templates/GemJewelleryWidget.html"
 ], function(declare, baseFx, lang, domStyle, mouse, on, _WidgetBase, _TemplatedMixin, template) {
 	return declare ([_WidgetBase, _TemplatedMixin], {
-		dealId: "NULL",
-		dealType:"NULL",
+		gemJewelleryId: "NULL",
+		type:"NULL",
 		title:"NULL",
 		price:"NULL",
 		
@@ -36,7 +36,7 @@ define ([
 	 this.own(
 			 on(domNode, mouse.enter, lang.hitch(this, "_changeBackground", this.mouseBackgroundColor)),
 			 on(domNode, mouse.leave, lang.hitch(this,"_changeBackground",this.baseBackgroundColor)),
-			 on(domNode, "click", lang.hitch(this,"_navigateToBuyNow",this.dealId))
+			 on(domNode, "click", lang.hitch(this,"_navigateToBuyNow",this.gemJewelleryId))
 	 );
 	},
 	
@@ -59,10 +59,10 @@ define ([
 		
 	},
 	
-	_navigateToBuyNow: function(dealId) {
+	_navigateToBuyNow: function(gemJewelleryId) {
 		
-		sessionStorage.setItem('productId',dealId);
-		sessionStorage.setItem('isGemJewelleryId',false);
+		sessionStorage.setItem('productId',gemJewelleryId);
+		sessionStorage.setItem('isGemJewelleryId',true);
 		window.location.replace('http://localhost:8080/EWTClientUi/BuyNow.html');
 		
 	},

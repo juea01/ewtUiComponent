@@ -73,15 +73,23 @@ Deal Widget
 
 .dealsWidget {
 	border: 1px solid black;
-	width: 30%;
-	height: 400px;
+	border-radius:5px;
+	width: 25%;
+	height: 300px;
 	margin-left: 3%;
 	margin-top: 1%;
 	margin-bottom: 1%;
 	overflow:hidden;
-	background-color: #fb9f18;
+	background-color: #acf708;
+	padding-left:0.4em;
 	float:left;
 	}
+
+.dealsWidget:hover {
+	cursor:pointer;
+	background-color: #def;	
+}
+		
 .dealsWidget h3 {
 		font-size: 1.5em;
 		font-style: italic;
@@ -115,12 +123,20 @@ Our Store Widget
 */		
 .ourStoreWidget {
 	border: 1px solid black;
-	width: 30%;
-	height: 400px;
+	border-radius:5px;
+	margin-top: 1%;
+	width: 25%;
+	height: 300px;
 	margin-left: 3%;
 	overflow:hidden;
-	background-color: #fb9f18;
+	background-color: #acf708;
+	padding-left:0.4em;
 	float:left;
+}
+
+.ourStoreWidget:hover {
+	cursor:pointer;
+	background-color: #def;	
 }
 
 /*
@@ -212,12 +228,27 @@ body{
 	margin:0;
 	padding:0;
 	height:100%;
+	font-size: 100%;
 	
 }
 
 #container{
 	min-height:100%;
 	position: relative;
+}
+
+p {
+	font-size: 1.5em;
+	line-height: 1.5;
+}
+
+div.middlealigned {
+	height:100%;
+	width: 60%;
+	left: 20%;
+	position:relative;
+	padding-bottom:170px;	
+	overflow:hidden;
 }
 
 	
@@ -281,5 +312,39 @@ a:active{
 }
 
 
+/** 
+ Image 
+**/
+.floatImageLeft {
+	width: 6em;
+	height: 6em;
+	float: left;
+	margin:0 0.5em 0.5em 0;
+}
 
+
+/**
+Side bar widget
+**/
+	/*
+Deal Widget
+*/
+
+.sideBarWidget {
+	border: 1px solid black;
+	border-radius:5px;
+	width: 15%;
+	height: 330px;
+	margin-left: 1%;
+	margin-top: 5%;
+	overflow:hidden;
+	background-color: #acf708;
+	padding-left:0.4em;
+	float:left;
+	position:fixed;
+	}
 	
+.sideBarWidget:hover {
+	cursor:pointer;
+	background-color: #def;	
+}

@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Demo: Using _TemplatedMixin</title>
+		<title>Home</title>
 	<link rel="stylesheet" href="dijit/themes/claro/claro.css" media="screen">
 	<link rel="stylesheet" href="widget/css/SomeWidget.css" media="screen">
 	<link rel="stylesheet" href="widget/css/Animation.css" media="screen">
@@ -107,109 +107,34 @@
 	<div class="bodyContentWidget">
 	<!-- This is for EWT Animation -->
 	<div data-dojo-type="widget/EwtAnimationWidget">
-	<div id="eworldTrade"><h1 >EWORLDTRADE </h1></div>
-	<div id="carrot"><img alt="the carrot" height="30" width="30" src="widget/images/carrot.png"></img></div>
-	<div id="money"><img alt="the money" height="30" width="30" src="widget/images/money.png"></img></div>	
+	<div id="e1"><h1 >E</h1></div>
+	<div id="w"><h1 >W</h1></div>
+	<div id="o"><h1 >O</h1></div>
+	<div id="o"><h1 >R</h1></div>
+	<div id="o"><h1 >L</h1></div>
+	<div id="o"><h1 >D</h1></div>
+	<div id="o"><h1 >T</h1></div>
+	<div id="o"><h1 >R</h1></div>
+	<div id="o"><h1 >A</h1></div>
+	<div id="o"><h1 >D</h1></div>
+	<div id="e2"><h1 >E</h1></div>
+	<br/><br/><br/><br/>
 	<div id="buyAndSell"><h3>Where you buy and sell!</h3></div>
-	
-	<div id="rabbit"><img alt="the rabbit" height="50" width="50" src="widget/images/rabbit.jpg"></img></div>
+	<div id="find"><h3>Find</h3></div>
+	<div id="out"><h3>out</h3></div>
+	<div id="more"><h3>more!</h3></div>
 	</div>
-	
-	<!-- This is for EWT Animation
-	Please note that bean of light need to be created and
-some animation need to be added to rabbit and also adjust color, images etc to be more professional -->
-<script type="text/javascript">
-	var carrot = document.querySelector("#carrot");
-	var money = document.querySelector("#money");
-	var eworldTrade = document.querySelector("#eworldTrade");
-	var buyAndSell = document.querySelector("#buyAndSell");
-	var currentPos = 230;
-	var currentEWorldTradePos = 0;
-	var currentOpacity = 1;
-	var runCarrot = true;
-	var runMoney = false;
-	var runEworldTrade = false;
-	var hasRunEworldTrade = false;
-	
-	var requestAnimationFrame = window.requestAnimationFrame || 
-    window.mozRequestAnimationFrame || 
-    window.webkitRequestAnimationFrame || 
-    window.msRequestAnimationFrame;
-	
-	
-	 function moveThing() {
-		
-		if (runCarrot) {
-			currentPos -= 2;
-			currentOpacity -= 0.01;
-			carrot.style.top = currentPos + "px";
-			carrot.style.opacity = currentOpacity; 
-		}
-		
-		 if (runMoney) {	 
-			currentPos +=2;
-			currentOpacity += 0.01;
-			money.style.top = currentPos + "px";
-			money.style.opacity = currentOpacity;			
-		} 
-		 
-		  if (runEworldTrade) { 
-			 currentOpacity -= 0.02;
-			 currentEWorldTradePos +=2;
-			 eworldTrade.style.top = currentEWorldTradePos + "px";
-			 money.style.opacity = currentOpacity;
-			 rabbit.style.opacity = currentOpacity;
-			 
-		 }  
-		
-		if (Math.abs(currentPos) <= 0) {
-			currentPos = 10;
-			currentOpacity = 0;
-			carrot.style.opacity = currentOpacity; 
-			runCarrot = false;
-			runMoney = true;
-		}
-		
-		 if (Math.abs(currentPos) >= 200 && runCarrot == false) {
-			runCarrot = false;
-			runMoney = false;
-		}
-		 
-		 
-		 if (!runCarrot && !runMoney && !hasRunEworldTrade){
-			 runEworldTrade = true;
-		 }
-		 
-		 
-		 if (Math.abs(currentEWorldTradePos) >= 160 && !hasRunEworldTrade) {
-			 hasRunEworldTrade = true;
-			 runEworldTrade = false;
-			 currentOpacity = 0;
-			} 
-		 
-		 if(hasRunEworldTrade && currentOpacity <=1){
-			 currentOpacity += 0.01;
-			 buyAndSell.style.opacity = currentOpacity;
-		 }
-		 
-		requestAnimationFrame(moveThing);
-	}
-	
-moveThing();  
-</script>
 
 <!-- This is for deals -->
 	<div data-dojo-type="widget/DealsWidget">
-		<div><h1>This is for deals</h1></div>
-		<div><h1>This is for deals</h1></div>
-		<div><h1>This is for deals</h1></div>
-		<div><h1>This is for deals</h1></div>
-		<div><h1>This is for deals</h1></div>
+		<div><p>Please check out our deals. Our aim is to bright together buyer, who want to sell/provide quality product/service with less price than competitors, and
+		sellers who want to get quality product/service with less price.  </p></div>
 	</div>
 	
 <!-- This is for deals -->
 <div data-dojo-type="widget/OurStoreWidget">
-	<div><h1>This is for our Store</h1></div>
+	<div><p>Please check out our gems and jewellery section where you can learn about gems from Myanmar, resource rich country which only recently started opening
+	doors to rest of the world, and can also purchased gems/jewellery from the region for yourself or for your loved ones.  </p></div>
 </div>
 	
 	
@@ -218,7 +143,7 @@ moveThing();
 	<!-- This is for footer -->
 	<div data-dojo-type="widget/FooterWidget">
 		<div class="footer_group1">
-			<div>About EWorldTrade</div>
+			<div><a href="AboutUs.html">About EWorldTrade</a></div>
 			<div class="vertical_space">  </div>
 			<div>Careers</div>
 		</div>

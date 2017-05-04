@@ -31,53 +31,225 @@
 }
 
 .animationWidget {
-	width: 30%;
-	height: 400px;
+	margin-left: 1%;
+	margin-top: 1%;
+	margin-bottom: 1%;
+	width: 25%;
+	height: 300px;
 	border: 1px black solid;
 	float:left;
 	overflow:hidden;
-	background-color: #fb9f18;
+	background-color: #acf708;
+	padding-left:0.5em;
+	border-radius:5px;
+	text-align: center;
 }
 
-
-#carrot {
- position: relative;
- left: 150px;
- top: 230px;
- vertical-align: middle;
- opacity:1;
+.animationWidget:hover {
+	cursor:pointer;
+	background-color: #def;	
 }
 
-#money {
- position: relative;
- left: 150px;
- top: -20px;
- vertical-align: middle; 
- opacity:0.0;
-}
-
-#rabbit {
- position: relative;
- left: 150px;
- top: 150px;
- vertical-align: middle;
- 
-}
-
-#eworldTrade {
+/**  EWORLDTRADE animation **/
+#e1{
 top:10px;
-left: 100px;
-position:relative;
-vertical-align: middle;
+float:left;
+
+animation-name: eAn;
+animation-duration: 7s;
+animation-delay: 2s;
 }
+
+#w{
+top:10px;
+float:left;
+
+animation-name: wAn;
+animation-duration: 6s;
+animation-delay: 2.5s;
+
+}
+
+#o{
+top:10px;
+float:left;
+
+animation-name: oAn;
+animation-duration: 5s;
+animation-delay: 3s;
+
+}
+
+#r{
+top:10px;
+float:left;
+
+animation-name: oAn;
+animation-duration: 5s;
+animation-delay: 3s;
+
+}
+
+#l{
+top:10px;
+float:left;
+
+animation-name: oAn;
+animation-duration: 5s;
+animation-delay: 3s;
+
+}
+
+#d{
+top:10px;
+float:left;
+
+animation-name: oAn;
+animation-duration: 5s;
+animation-delay: 3s;
+
+}
+
+#t{
+top:10px;
+float:left;
+
+animation-name: oAn;
+animation-duration: 5s;
+animation-delay: 3s;
+
+}
+
+#r{
+top:10px;
+float:left;
+
+animation-name: oAn;
+animation-duration: 5s;
+animation-delay: 3s;
+
+}
+
+#a{
+top:10px;
+float:left;
+
+animation-name: oAn;
+animation-duration: 5s;
+animation-delay: 3s;
+
+}
+
+#d{
+top:10px;
+float:left;
+
+animation-name: oAn;
+animation-duration: 5s;
+animation-delay: 3s;
+
+}
+
+#e2{
+top:10px;
+float:left;
+
+animation-name: e2An;
+animation-duration: 3s;
+animation-delay: 3.5s;
+
+}
+
+@keyframes eAn{
+	0% {transform: rotate(20deg);}
+}
+
+@keyframes wAn{
+	0% {transform: rotate(20deg);}
+}
+
+@keyframes oAn{
+	0% {transform: rotate(20deg);}
+}
+
+@keyframes e2An{
+	0% {transform: rotate(20deg);}
+}
+
 
 #buyAndSell {
-position:relative;
-top:70px;
-left: 100px;
- vertical-align: middle;
-opacity:0;
+
+	animation-name: eBuySellAn;
+	animation-duration: 5s;
+	animation-delay:6s;
 }
+
+@keyframes eBuySellAn{
+	0% {opacity:0;}
+	10% {opacity:1;}
+	20% {opacity:0;}
+	30% {opacity:1;}
+	40% {opacity:0;}
+	50% {opacity:1;}
+	60% {opacity:1;}
+	70% {opacity:0;}
+	80% {opacity:1;}
+	90% {opacity:0;}
+	100% {opacity:1;}
+}
+
+
+#find {
+	float:left;
+	
+	animation-name:findOutMoreAn;
+	animation-duration:2s;
+	animation-delay:12s;
+	
+}
+
+#out {
+
+	float:left;
+	margin-left:5px;
+	animation-name:findOutMoreAn;
+	animation-duration:2s;
+	animation-delay:13s;
+	
+}
+
+#more {
+
+	float:left;
+	margin-left:8px;
+	animation-name:findOutMoreAn;
+	animation-duration:2s;
+	animation-delay:14s;
+	
+}
+
+@keyframes findOutMoreAn{
+	0% {color:white;}
+}
+
+.movingArrow {
+	position:relative;
+	margin-left:70%;
+	height:20px;
+	width:20px;
+	animation-name:movingArrowAn;
+	animation-duration:2s;
+	animation-delay:2s;
+	animation-iteration-count:infinite;
+}
+
+
+
+@keyframes movingArrowAn {
+	0% {left:20px;}
+}
+
+
 
 img {
  vertical-align: middle;

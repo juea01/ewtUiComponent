@@ -75,17 +75,24 @@
  
  <script>
 require(["dojo","dijit/dijit","dojo/parser","dojo/data/ItemFileReadStore","dojox/image/Gallery",
-         "dojo/request","dojo/dom","dojo/_base/array", "widget/BuyNowWidget", "widget/StoreState", "dojo/domReady!"],
-function (dojo, dijit, parser, ifrs, Gallery,request, dom, arrayUtil, BuyNowWidget, StoreState) {
+         "dojo/request","dojo/dom","dojo/_base/array", "widget/BuyNowWidget","widget/BuyNowGemJewelleryWidget", "widget/StoreState", "dojo/domReady!"],
+function (dojo, dijit, parser, ifrs, Gallery,request, dom, arrayUtil, BuyNowWidget, BuyNowGemJewelleryWidget, StoreState) {
 	
 	StoreState.storePageUrl(window.location.href);
 	
 	 var productId = sessionStorage.getItem('productId');
-	 request ("http://localhost:8080/EWTRestServices/rest/DealServices/deal?dealId="+productId, {
+	 var isGemJewelleryId = sessionStorage.getItem('isGemJewelleryId');
+	 var url = "http://localhost:8080/EWTRestServices/rest/DealServices/deal?dealId=";
+	 
+	 if(isGemJewelleryId === "true") {
+		 url = "http://localhost:8080/EWTRestServices/rest/GemJewelleryServices/gemJewellery?gemJewelleryId=";
+	 }
+	 
+	 request (url+productId, {
 		 handleAs: "json"
-	 }).then(function(deal){
+	 }).then(function(result){
 		 var buyNowContainer = dom.byId("buyNowContainer");
-	     var widget = new BuyNowWidget(deal).placeAt(buyNowContainer);	     
+	     var widget = (isGemJewelleryId === "true") ? new BuyNowGemJewelleryWidget(result).placeAt(buyNowContainer) : new BuyNowWidget(result).placeAt(buyNowContainer);	     
 
          // Define the attribute names used to access the items in the data store
          parser.parse();
@@ -103,7 +110,7 @@ function (dojo, dijit, parser, ifrs, Gallery,request, dom, arrayUtil, BuyNowWidg
          };
           
           
-          var urls = deal.dealImages;
+          var urls = result.images;
           var imageUrls = urls.toString().split(",");   
           
      	  // Build an array of image items for the data store
@@ -138,7 +145,7 @@ function (dojo, dijit, parser, ifrs, Gallery,request, dom, arrayUtil, BuyNowWidg
 	<!-- This is for footer -->
 	<div data-dojo-type="widget/FooterWidget">
 		<div class="footer_group1">
-			<div>About EWorldTrade</div>
+			<div><a href="AboutUs.html">About EWorldTrade</a></div>
 			<div class="vertical_space">  </div>
 			<div>Careers</div>
 		</div>

@@ -2,12 +2,35 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Demo: Using _TemplatedMixin</title>
+		<title>About Us</title>
 	<link rel="stylesheet" href="dijit/themes/claro/claro.css" media="screen">
 	<link rel="stylesheet" href="widget/css/SomeWidget.css" media="screen">
 	<link rel="stylesheet" href="widget/css/Animation.css" media="screen">
 	
-		<script src="dojo/dojo.js" data-dojo-config="async: true, parseOnLoad: true"></script> 
+		<script>dojoConfig = {async: true, parseOnLoad: true}</script>
+		<script src="dojo/dojo.js"></script>
+		<script>
+	require(["dojo","dojox/widget/AutoRotator", "dojox/widget/rotator/Slide","widget/StoreState",
+		 		"dojo/domReady!"], function(dojo,AutoRotator,Slide,StoreState) {
+		<!-- This is for rotating banner -->
+	    new dojox.widget.AutoRotator(
+	        {
+	            transition: "dojox.widget.rotator.slideRight",
+	            transitionParams: "quick:true,continuous:true",
+	            duration: 2500,
+	            panes: [
+	                { className: "pane pane0", innerHTML: "<img src='widget/images/Add1.jpg' height='180px' width='100%'/>" },
+	                { className: "pane pane1", innerHTML: "<img src='widget/images/Add2.jpg' height='180px' width='100%'/>" },
+	                { className: "pane pane2", innerHTML: "<img src='widget/images/Add3.jpg' height='180px' width='100%'/>" }
+	            ]
+
+	        },
+	        dojo.byId("myAutoRotator")
+	    );
+	    
+	    StoreState.storePageUrl(window.location.href);
+	});
+	</script>
 	
 	<!-- This is for header  --> 
 		<script>
@@ -21,7 +44,29 @@
 			});
 		</script>
 		
-																
+		
+		
+		<!-- This is for EWTAnimation  --> 
+		<script>
+			require([
+				"widget/EWTAnimationWidget",
+			], function(parser) {
+				// Invoke the dojo/parser
+				parser.parse();
+			});
+		</script>
+			
+	
+	 
+	
+		
+		
+		
+		
+		
+	
+	
+		
 		<!-- This is for footer  --> 
 		<script>
 			require([
@@ -55,59 +100,27 @@
 		</div>
 		
 	</div>
-	
-<div class="bodyContentWidget">	
-<div id="resultDiv">
-<div><label>Server Message:</label><span id="svrMessage"></span></div>
-</div>
-</div>
- <form id="formNode">
-  <div><label>Username: </label><input type="text" name="userName" /></div>
-			<div><label>Password: </label><input type="password" name="password" /></div>
-  <button class="button" type="submit">Submit</button>
- </form>
- <script>
- 
- require(["dojo/dom", "dojo/on", "dojo/request", "dojo/dom-form", "dojo/parser",
-  		"dojox/form/BusyButton",
-  		"dojo/domReady!"], function(dom, on, request, domForm) {
-  		
-  		
-  		var form = dom.byId("formNode");
-  		 
-  		 dojo.connect(form,"submit", function(event){
-  			//prevent the page form navigating after submit
-  			event.stopPropagation();
-  			event.preventDefault();
-  			
-  			// Post the data to the server
-  			request.post("http://localhost:8080/EWTRestServices/rest/UserServices/validUser", {
-  				
-  				data: dojo.formToJson("formNode"),
-  				
-  				timeout: 5000
-  				
-  			}).then(function(response){
-  				console.log(response);
-  				sessionStorage.setItem('userName',response);
-  				var url = sessionStorage.getItem('previousPageUrl');
-  				console.log("This is URl"+url);
-  				window.location.replace(url);
-  			},function(error){
-  				console.log( error);
-  				dom.byId('svrMessage').innerHTML = "Status Code: " + error.response.status +" Message: " + error.response.data;
-  			});
-  			
-  			
-  		}); 
-  		 
-  		 
-  	
-  	}
-  	);
- 
 
- </script>
+	
+	<div class="bodyContentWidget">
+	
+	<div class = "middlealigned">
+	<h2> About EWorldTrade</h2>
+	<p>
+	We are small organization who believe world trades can be performed through online medium and can benefit people like you and me. 
+	Here we are dedicated making your online shopping/selling experience as smooth as possible.
+	Unlike most other shopping Website, we are here to bring individuals, business owner who want to sell/provide products/services with less price than
+	competitors without comprising quality and as a result you get quality products/services with less price. You can also check out gems and jewellery from Myanmar, which
+	only recently started opening doors to rest of the world, in our gems and jewellery section.
+	<br/><br/>
+	We wish you happy trading on EWORLDTRADE and if you have any constructive suggestion, we would be happy to hear from you.
+	<br/>
+	<br/>
+	EWORLDTRDE TEAM    
+	</p>
+	</div>
+	
+	</div>	
 	<!-- This is for footer -->
 	<div data-dojo-type="widget/FooterWidget">
 		<div class="footer_group1">
