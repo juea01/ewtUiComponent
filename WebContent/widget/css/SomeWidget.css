@@ -242,7 +242,7 @@ p {
 	line-height: 1.5;
 }
 
-div.middlealigned {
+.middlealigned {
 	height:100%;
 	width: 60%;
 	left: 20%;
@@ -251,6 +251,32 @@ div.middlealigned {
 	overflow:hidden;
 }
 
+.middleAlignedFormBox {
+	height:100%;
+	width: 60%;
+	left: 30%;
+	position:relative;
+	padding-bottom:170px;	
+	overflow:hidden;
+}
+
+.loginBox  {
+	border: 1px solid black; 
+	width: 30%;
+	margin-top: 3em;
+	left: 30%;
+	position:relative;
+	padding-bottom:170px;	
+	overflow:hidden;
+	border-radius: 5px;
+	padding:70px 0 70px 0;
+	text-align:center;
+	background-color:green;
+}
+
+#errorMessage {
+	color:red;
+}
 	
 /*
 Button
@@ -264,6 +290,7 @@ Button
     padding-bottom: 5px;
     border-radius: 5px;
     transition: background-color 3s;
+    
 }
 
 .button:hover {
@@ -347,4 +374,24 @@ Deal Widget
 .sideBarWidget:hover {
 	cursor:pointer;
 	background-color: #def;	
+}
+
+/*
+Following will scale down image gracefully but not increase the size more than original.
+*/
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+.polaroidImg {
+  width: 80%;
+  background-color: white;
+  box-shadow: 0 4px 8px 2px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 25px;
+}
+
+.polaroidImgContainer {
+  text-align: center;
+  padding: 10px 20px;
 }

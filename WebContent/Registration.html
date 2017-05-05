@@ -74,9 +74,9 @@ table {border-collapse: collapse; border-spacing: 0px;}
 	</div>
 	
 <div class="bodyContentWidget">	
-
+<div class = "middleAlignedFormBox">
 <h1> Registration Form</h1>
-<p style="font-size: x-small;"> 
+<p style="font-size: small;"> 
 *Denotes required fields. Page will simply reload on a successful form submission.
 </p>
 <!-- <script>
@@ -125,23 +125,27 @@ return true;
 </script>
  -->
  
-
+ <p id="errorMessage"></p>
+ <br/>
 <table>
 <tr> 
-<td valign="top"><strong>First Name*:</strong> </td>
+<td valign="top"><strong>First Name*:</strong> </td>  
 <td><input type="text" required="true" name="userName" id="firstName" placeholder="Your Name"
 	data-dojo-type="dijit/form/ValidationTextBox" missingMessage="Ooops! You forgot your first name!"/></td>
 </tr>
+<tr><td><br/> </td> </tr>
 <tr> 
 <td valign="top"><strong>Email*:</strong> </td>
 <td><input type="text" required="true" name="email" id="email" placeholder="Your Email"
 	data-dojo-type="dijit/form/ValidationTextBox" validator="dojox.validate.isEmailAddress"/></td>
 </tr>
+<tr><td><br/> </td> </tr>
 <tr> 
 <td valign="top"><strong>Date of Birth*:</strong> </td>
 <td><input type="text" required="true" name="dateOfBirth" id="dateOfBirth" placeholder="Your Birth day"
 	data-dojo-type="dijit/form/DateTextBox" value="7/5/1983"/></td>
 </tr>
+<tr><td><br/> </td> </tr>
 <tr> 
 <td valign="top"><strong>Please select your gender:</strong> </td>
 <td>
@@ -165,12 +169,12 @@ return true;
 </td>
 </tr>
 </table>
-
+<br/>
 <!-- Submit button --> 
  <input type="button" id="remBtn" label="Clear" dojoType="dijit.form.Button" />
  <button class="button" type="submit">Submit</button>
 </form>
-
+</div>
 <script>
 
 	require(["dojo/dom", "dojo/on", "dojo/request", "dojo/dom-form", "dojo/parser",
@@ -207,7 +211,7 @@ return true;
 				timeout: 5000
 				
 			}).then(function(response){
-				dom.byId('response').innerHTML = response;
+				dom.byId('errorMessage').innerHTML = response;
 			},function(error){
 				console.log("an error");
 			});
@@ -221,7 +225,6 @@ return true;
 	);
 	
 </script>
-<p id="response"></p>
 </div>
 	<!-- This is for footer -->
 	<div data-dojo-type="widget/FooterWidget">
