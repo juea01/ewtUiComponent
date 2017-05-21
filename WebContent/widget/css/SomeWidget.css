@@ -55,6 +55,19 @@ For header
 	vertical-align:top;
 	margin-left:5%;	
 }
+.myaccountGreetingWrapper_div {
+	clear:left;
+}
+.myaccountHome_div {
+	margin-left: 10%;
+	display:inline-block;
+	margin-top:20px;
+}
+.greeting_div {
+	margin-left: 60%;
+	margin-top:20px;
+	display:inline-block;
+}
 
 /*
 Body Content Widget
@@ -372,6 +385,26 @@ Deal Widget
 	}
 	
 .sideBarWidget:hover {
+	cursor:pointer;
+	background-color: #def;	
+}
+
+.sideBarMenuWidget {
+	border: 1px solid black;
+	border-radius:5px;
+	width: 15%;
+	height: 30px;
+	margin-left: 1%;
+	margin-top: 1%;
+	overflow:hidden;
+	background-color: #acf708;
+	padding-left:0.4em;
+	float:left;
+	position:fixed;
+	text-align: center;
+}
+
+.sideBarMenuWidget:hover {
 	cursor:pointer;
 	background-color: #def;	
 }

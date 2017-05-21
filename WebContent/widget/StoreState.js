@@ -21,6 +21,20 @@ define([
 	getDealsStartIndex: function () {
 		var startIndex = sessionStorage.getItem('dealsStartIndex');
 		return startIndex;
+	},
+	
+	storeSearchKeyWord: function (keyWord)  {
+		console.log("This is search key word"+keyWord);
+		sessionStorage.setItem('searchKeyWord',keyWord);	
+	},
+	
+	getSearchKeyWord: function ()  {
+		var searchKeyword = sessionStorage.getItem('searchKeyWord');
+		return searchKeyword;
+	},
+	
+	removeSearchKeyWord: function () {
+		sessionStorage.removeItem('searchKeyWord');
 	}
 		
 	};
