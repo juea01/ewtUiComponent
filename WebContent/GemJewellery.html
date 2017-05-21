@@ -76,7 +76,46 @@
 				parser.parse();
 			});
 		</script>
-		
+	
+	<!-- This is for search box -->
+		<script>
+			require(["dojo","dojo/dom","dijit/form/Button","dojo/dom","dojo/store/Memory","dijit/form/FilteringSelect","widget/StoreState","dojo/store/JsonRest","dojo/domReady!"],
+					function(dojo,dom,Button,dom,Memory,FilteringSelect,StoreState,JsonRest){
+				
+					var store = new JsonRest({
+						target: "http://localhost:8080/EWTRestServices/rest/UtilityServices/productLists"
+					});
+				 
+					var results = store.query({});
+						results.then(function (productList) {
+						var productStore = new Memory({
+							data: productList
+						});
+						
+						var filteringSelect = new  FilteringSelect({
+							id: "productSelect",
+							name: "Car",
+							value: "CA",
+							store: productStore,
+							searchAttr: "name",
+						},"productSelect").startup();
+					});
+				
+					
+					
+					
+							 
+					
+					var mySearchButton = new Button({
+						label: "Search",
+						onClick:function(){
+							StoreState.storeSearchKeyWord(dijit.byId('productSelect').get('value'));
+						window.location.replace('http://localhost:8080/EWTClientUi/Deals.html');	
+						}
+					},"searchButtonNode").startup();
+				
+					});
+		</script>	
 				
 	</head>
 	<body class="claro">
@@ -87,8 +126,8 @@
 			<div>EWorldTradeLogo</div>
 		</div>
 		<div class="search_div">
-			<input type="text" data-dojo-type="dijit/form/TextBox" class="searchBox"></input>
-			<button data-dojo-type="dijit/form/Button" ><img src="resources/search.png" class="searchButton" height="30" width="50"/></button>
+			<input id="productSelect"/>
+			<button id="searchButtonNode" type="button" ><img src="resources/search.png" class="searchButton" height="30" width="50"/></button>
 		</div>
 		<div class="login_Supplier_Wrapper_div">
 		  <div class="listDeal_div">

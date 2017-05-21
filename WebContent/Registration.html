@@ -49,7 +49,52 @@ table {border-collapse: collapse; border-spacing: 0px;}
 				parser.parse();
 			});
 		</script>
-		
+<!-- This is for search box -->
+		<script>
+			require(["dojo","dojo/dom","dijit/form/Button","dojo/dom","dojo/store/Memory","dijit/form/FilteringSelect","widget/StoreState","dojo/store/JsonRest","dojo/domReady!"],
+					function(dojo,dom,Button,dom,Memory,FilteringSelect,StoreState,JsonRest){
+				
+					var store = new JsonRest({
+						target: "http://localhost:8080/EWTRestServices/rest/UtilityServices/productLists"
+					});
+				 
+					var results = store.query({});
+						results.then(function (productList) {
+						var productStore = new Memory({
+							data: productList
+						});
+						
+						var filteringSelect = new  FilteringSelect({
+							id: "productSelect",
+							name: "Car",
+							value: "CA",
+							store: productStore,
+							searchAttr: "name",
+						},"productSelect").startup();
+					});
+				
+					
+					
+					
+							 
+					
+					var mySearchButton = new Button({
+						label: "Search",
+						onClick:function(){
+							StoreState.storeSearchKeyWord(dijit.byId('productSelect').get('value'));
+						window.location.replace('http://localhost:8080/EWTClientUi/Deals.html');	
+						}
+					},"searchButtonNode").startup();
+				
+					});
+		</script>		
+	<script>
+			require([
+				"dojox/form/PasswordValidator",
+			], function(PasswordValidator) {
+			
+			});
+	</script>
 </head>
 <body class="claro">
 	<div id="container">
@@ -59,8 +104,8 @@ table {border-collapse: collapse; border-spacing: 0px;}
 			<div>EWorldTradeLogo</div>
 		</div>
 		<div class="search_div">
-			<input type="text" data-dojo-type="dijit/form/TextBox" class="searchBox"></input>
-			<button data-dojo-type="dijit/form/Button" ><img src="resources/search.png" class="searchButton" height="30" width="50"/></button>
+			<input id="productSelect"/>
+			<button id="searchButtonNode" type="button" ><img src="resources/search.png" class="searchButton" height="30" width="50"/></button>
 		</div>
 		<div class="login_Supplier_Wrapper_div">
 		  <div class="login_div">
@@ -170,6 +215,15 @@ return true;
 </tr>
 </table>
 <br/>
+<table>
+<tr><td><div data-dojo-type="dojox.form.PasswordValidator" name="password">
+<label><strong>Please enter password:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong><input id="password" type="password" pwType="new" /></label><br/><br/>
+<label><strong>Please re-enter password:&nbsp;</strong><input id="passwordReenter" type="password" pwType="verify" /></label>
+</div>
+</td>
+</tr>
+</table>
+<br/>
 <!-- Submit button --> 
  <input type="button" id="remBtn" label="Clear" dojoType="dijit.form.Button" />
  <button class="button" type="submit">Submit</button>
@@ -183,13 +237,15 @@ return true;
 		/* basic dijit classes */
 		"dijit/form/CheckBox", "dijit/form/Textarea", "dijit/form/FilteringSelect", "dijit/form/TextBox", "dijit/form/ValidationTextBox", "dijit/form/DateTextBox", "dijit/form/TimeTextBox", "dijit/form/Button", "dijit/form/RadioButton", "dijit/form/Form", "dijit/form/DateTextBox",
 		/* basic dojox classes */
-		"dojox/form/BusyButton", "dojox/form/CheckedMultiSelect",
+		"dojox/form/BusyButton", "dojox/form/CheckedMultiSelect","dojox/form/PasswordValidator",
 		"dojo/domReady!"], function(dom, on, request, domForm) {
 		
 		function resetValues() { 
 			dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("firstName"), "reset");
 			dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("email"), "reset");
 			dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("dateOfBirth"), "reset");
+			dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("password"), "reset");
+			dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("passwordReenter"), "reset");
 		};
 		
 		resetValues();
