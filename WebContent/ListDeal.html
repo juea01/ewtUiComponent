@@ -12,13 +12,49 @@
 		<script src="dojo/dojo.js"></script>
 		<script>
 			require([
+				"dojo/dom", "dojo/on", "dojo/request", "dojo/dom-form",
 				"dojo/parser",
 				"dojox/form/Uploader",
 				"dojox/form/uploader/FileList",
 				"dijit/form/Button",
 				"dojox/form/uploader/plugins/IFrame",
-				"widget/StoreState"
-			], function(Parser,Uploader,FileList,Button,IFrame,StoreState) {
+				"dijit/form/TextBox",
+				"dijit/registry",
+				"widget/StoreState",
+				"dojox/validate/us", "dojox/validate/web",
+				"dijit/form/CheckBox", "dijit/form/Textarea", "dijit/form/FilteringSelect","dijit/form/ValidationTextBox", "dijit/form/DateTextBox", "dijit/form/TimeTextBox", "dijit/form/Button", "dijit/form/Form", "dijit/form/DateTextBox",
+				/* basic dojox classes */
+				"dojox/form/BusyButton", "dojox/form/CheckedMultiSelect","dojox/form/PasswordValidator",
+				"dojo/domReady!"
+			], function(dom, on, request, domForm,Parser,Uploader,FileList,Button,IFrame,TextBox,registry,StoreState) {
+				
+				var form = dom.byId("myForm");
+				dojo.connect(form,"submit", function(event){
+		  			//prevent the page form navigating after submit
+		  			event.stopPropagation();
+		  			event.preventDefault();
+		  			
+		  			// Post the data to the server
+		  			request.post("http://localhost:8080/EWTRestServices/rest/UploadServices/listDeal", {		  				
+		  				data: new FormData(this),		  				
+		  				timeout: 5000,		  				
+		  				headers: {
+		  					'Content-Type': false
+		  				}		  						  				
+		  			}).then(function(response){
+		  				response = JSON.parse(response);
+		  				sessionStorage.setItem('productId',response.dealId);
+		  				StoreState.setRedirectPage('ListDeal');
+		  				window.location.replace('http://localhost:8080/EWTClientUi/Redirect.html');
+		  			},function(error){
+		  				console.log( error);
+		  				dom.byId('errorMessage').innerHTML = "Status Code: " + error.response.status +" Message: " + error.response.data;
+		  			});
+		  			
+		  			
+		  		}); 
+				
+				Parser.parse();
 				
 				var userDetail = sessionStorage.getItem('userDetail');
 				
@@ -26,6 +62,9 @@
 					StoreState.storePageUrl(window.location.href);
 					 window.location.replace('http://localhost:8080/EWTClientUi/Login.html'); 
 				}
+				userDetail = JSON.parse(userDetail);
+				var userId = registry.byId("userId");
+				userId.set("value",userDetail.userId);
 				
 				plug = "HTML5";
 				var handleUpload = function(upl, node){
@@ -52,6 +91,7 @@
 					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("description"), "reset");
 					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("currency"), "reset");
 					handleUpload(dijit.byId("uploader"), dojo.byId('colImages'));
+					
 				});
 			});
 		</script>
@@ -76,6 +116,7 @@
 		<!-- This is for footer  --> 
 		<script>
 			require([
+				"dojo/parser",
 				"widget/FooterWidget",
 			], function(parser) {
 				// Invoke the dojo/parser
@@ -105,18 +146,23 @@
 							store: productStore,
 							searchAttr: "name",
 						},"productSelect").startup();
+						
+						var filteringSelect = new  FilteringSelect({
+							id: "title",
+							name: "Car",
+							value: "Car",
+							store: productStore,
+							searchAttr: "name",
+						},"title").startup();
 					});
 				
 					
-					
-					
-							 
 					
 					var mySearchButton = new Button({
 						label: "Search",
 						onClick:function(){
 							StoreState.storeSearchKeyWord(dijit.byId('productSelect').get('value'));
-						window.location.replace('http://localhost:8080/EWTClientUi/Deals.html');	
+						window.location.replace('http://localhost:8080/EWTClientUi/Search.html');	
 						}
 					},"searchButtonNode").startup();
 				
@@ -151,13 +197,13 @@
 <p style="font-size: small;"> 
 *Denotes required fields. Page will simply reload on a successful form submission.
 </p>
+<div id="errorMessage"></div>
 <!-- This is for List Deal Form -->
 	  <table class="pageTable" role="presentation">
 		<tr>
 			<td id="colForm">
-				<form method="post" action="http://localhost:8080/EWTRestServices/rest/UploadServices/listDeal" id="myForm" enctype="multipart/form-data" >
-				<table> <tr><td><strong>Items you are selling:</strong></td><td><input type="text" required="true" name="title" id="title" placeholder="What are you selling?"
-					data-dojo-type="dijit/form/ValidationTextBox" missingMessage="Ooops! You need to mention what you are selling."/> </td></tr>				
+				<form id="myForm" enctype="multipart/form-data" >
+				<table> <tr><td><strong>Items you are selling:</strong></td><td><input id="title" name="title" /> </td></tr>				
 					<tr>
 				<td valign="top">
 				<strong>Brief Description:</strong> </td><td> <input type="text" required="true" name="briefDescription" id="briefDescription" placeholder="Brief Description"
@@ -180,6 +226,7 @@
 				<tr><td valign="top">
 				<strong>Please enter full description here:</strong></td><td><textarea id="description" name="description" placeholder="Please write your full description here." data-dojo-type="dijit/form/SimpleTextarea" rows="6" cols="70" style="width:auto;" ></textarea>
 				</td></tr>
+				<tr><td><input type="hidden" id="userId" name="userId" data-dojo-type="dijit/form/TextBox"/> </td></tr>
 				<tr><td></td><td>
 				<input class="browseButton" name="uploadedfile" multiple="true" type="file" dojoType="dojox.form.Uploader" label="Select Images" id="uploader">
 				</td></tr>

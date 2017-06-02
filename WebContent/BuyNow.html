@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Demo: Using _TemplatedMixin</title>
+		<title>Buy Now</title>
 	<link rel="stylesheet" href="dijit/themes/claro/claro.css" media="screen">
 	<link rel="stylesheet" href="dojox/image/resources/image.css" media="screen">
 	<link rel="stylesheet" href="dijit/themes/tundra/tundra.css" media="screen">
@@ -33,6 +33,7 @@
 		<!-- This is for footer  --> 
 		<script>
 			require([
+				"dojo/parser",
 				"widget/FooterWidget",
 			], function(parser) {
 				// Invoke the dojo/parser
@@ -73,7 +74,7 @@
 						label: "Search",
 						onClick:function(){
 							StoreState.storeSearchKeyWord(dijit.byId('productSelect').get('value'));
-						window.location.replace('http://localhost:8080/EWTClientUi/Deals.html');	
+						window.location.replace('http://localhost:8080/EWTClientUi/Search.html');	
 						}
 					},"searchButtonNode").startup();
 				

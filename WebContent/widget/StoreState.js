@@ -23,6 +23,16 @@ define([
 		return startIndex;
 	},
 	
+	storeSearchStartIndex: function (startIndex)  {
+		console.log("This is start index of search page in session variable"+startIndex);
+		sessionStorage.setItem('searchStartIndex',startIndex);	
+	},
+	
+	getSearchStartIndex: function () {
+		var startIndex = sessionStorage.getItem('searchStartIndex');
+		return startIndex;
+	},
+	
 	storeSearchKeyWord: function (keyWord)  {
 		console.log("This is search key word"+keyWord);
 		sessionStorage.setItem('searchKeyWord',keyWord);	
@@ -35,6 +45,14 @@ define([
 	
 	removeSearchKeyWord: function () {
 		sessionStorage.removeItem('searchKeyWord');
+	},
+	
+	setRedirectPage: function (pageName) {
+		sessionStorage.setItem('redirectPage',pageName);
+	},
+	
+	getRedirectPage: function () {
+		return sessionStorage.getItem('redirectPage');
 	}
 		
 	};

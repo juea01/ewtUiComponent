@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Home</title>
+		<title>Redirect</title>
 	<link rel="stylesheet" href="dijit/themes/claro/claro.css" media="screen">
 	<link rel="stylesheet" href="widget/css/SomeWidget.css" media="screen">
 	<link rel="stylesheet" href="widget/css/Animation.css" media="screen">
@@ -77,25 +77,32 @@
 			});
 		</script>
 		
-		
 		<!-- This is for search box -->
 		<script>
-			require(["dojo","dojo/dom","dijit/form/Button","dojo/dom","dojo/store/Memory","dijit/form/FilteringSelect","widget/StoreState","dojo/domReady!"],
-					function(dojo,dom,Button,dom,Memory,FilteringSelect,StoreState){
-					var productStore = new Memory({
-						data:[
-						  {name:"Car",id:"Car"},
-						  {name:"Gems",id:"GM"}
-						      ]
+			require(["dojo","dojo/dom","dijit/form/Button","dojo/dom","dojo/store/Memory","dijit/form/FilteringSelect","widget/StoreState","dojo/store/JsonRest","dojo/domReady!"],
+					function(dojo,dom,Button,dom,Memory,FilteringSelect,StoreState,JsonRest){
+				
+					var store = new JsonRest({
+						target: "http://localhost:8080/EWTRestServices/rest/UtilityServices/productLists"
 					});
+				 
+					var results = store.query({});
+						results.then(function (productList) {
+						var productStore = new Memory({
+							data: productList
+						});
+						
+						var filteringSelect = new  FilteringSelect({
+							id: "productSelect",
+							name: "Car",
+							value: "CA",
+							store: productStore,
+							searchAttr: "name",
+						},"productSelect").startup();
+					});
+				
 					
-					var filteringSelect = new  FilteringSelect({
-						id: "productSelect",
-						name: "Car",
-						value: "CA",
-						store: productStore,
-						searchAttr: "name",
-					},"productSelect").startup();
+					
 					
 							 
 					
@@ -103,13 +110,12 @@
 						label: "Search",
 						onClick:function(){
 							StoreState.storeSearchKeyWord(dijit.byId('productSelect').get('value'));
-						window.location.replace('http://localhost:8080/EWTClientUi/Deals.html');	
+						window.location.replace('http://localhost:8080/EWTClientUi/Search.html');	
 						}
 					},"searchButtonNode").startup();
 				
 					});
 		</script>
-		
 				
 	</head>
 	<body class="claro">
@@ -133,46 +139,30 @@
 		</div>
 		
 	</div>
-	
-	<!-- This is for Rotating banner -->
-	<div id="myAutoRotator" class="rotator"></div>
+
 	
 	<div class="bodyContentWidget">
-	<!-- This is for EWT Animation -->
-	<div data-dojo-type="widget/EwtAnimationWidget">
-	<div id="e1"><h1 >E</h1></div>
-	<div id="w"><h1 >W</h1></div>
-	<div id="o"><h1 >O</h1></div>
-	<div id="o"><h1 >R</h1></div>
-	<div id="o"><h1 >L</h1></div>
-	<div id="o"><h1 >D</h1></div>
-	<div id="o"><h1 >T</h1></div>
-	<div id="o"><h1 >R</h1></div>
-	<div id="o"><h1 >A</h1></div>
-	<div id="o"><h1 >D</h1></div>
-	<div id="e2"><h1 >E</h1></div>
-	<br/><br/><br/><br/>
-	<div id="buyAndSell"><h3>Where you buy and sell!</h3></div>
-	<div id="find"><h3>Find</h3></div>
-	<div id="out"><h3>out</h3></div>
-	<div id="more"><h3>more!</h3></div>
-	</div>
-
-<!-- This is for deals -->
-	<div data-dojo-type="widget/DealsWidget">
-		<div><p>Please check out our deals. Our aim is to bring together buyer, who want to sell/provide quality product/service with less price than competitors, and
-		sellers who want to get quality product/service with less price.  </p></div>
+	
+	<div class = "middlealigned">
+	<script>
+	require(["dojo/dom-construct", "dojo/dom", "widget/StoreState","dojo/domReady!"],
+			function(domConstruct, dom,StoreState){
+			  
+		if (StoreState.getRedirectPage() === 'ListDeal') {	  
+			var message = domConstruct.toDom("Your listing has been successfully posted. Please click <a href='http://localhost:8080/EWTClientUi/BuyNow.html'>here</a> to view your listing.");
+			domConstruct.place(message, "messageArea");
+		} else if (StoreState.getRedirectPage() === 'Registration') {
+			var message = domConstruct.toDom("Your Registration has been successful. You can start listing deals or buying deals by logging in <a href='http://localhost:8080/EWTClientUi/Login.html'>here</a>.");
+			domConstruct.place(message, "messageArea");
+		}
+			  
+			});
+	</script>
+	<p id="messageArea">
+	</p>
 	</div>
 	
-<!-- This is for deals -->
-<div data-dojo-type="widget/OurStoreWidget">
-	<div><p>Please check out our gems and jewellery section where you can learn about gems from Myanmar, resource rich country which only recently started opening
-	doors to rest of the world, and can also purchased gems/jewellery from the region for yourself or for your loved ones.  </p></div>
-</div>
-	
-	
-	
-</div>	
+	</div>	
 	<!-- This is for footer -->
 	<div data-dojo-type="widget/FooterWidget">
 		<div class="footer_group1">

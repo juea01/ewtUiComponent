@@ -80,7 +80,7 @@
 						label: "Search",
 						onClick:function(){
 							StoreState.storeSearchKeyWord(dijit.byId('productSelect').get('value'));
-						window.location.replace('http://localhost:8080/EWTClientUi/Deals.html');	
+						window.location.replace('http://localhost:8080/EWTClientUi/Search.html');	
 						}
 					},"searchButtonNode").startup();
 				
@@ -124,8 +124,6 @@
 		StoreState.storePageUrl(window.location.href);
 		
 		var totalItems = 0;
-		var searchWord = StoreState.getSearchKeyWord();
-		StoreState.removeSearchKeyWord();
 		var startIndex = (StoreState.getDealsStartIndex() != null ? StoreState.getDealsStartIndex() : 0);
 		console.log("Start Index"+ startIndex);
 		var store = new JsonRest({
@@ -134,8 +132,7 @@
 				 
 		var results = store.query({
 			start: startIndex,
-			count: 3,
-			searchKeyWord: searchWord
+			count: 3
 		});
 		
 		results.then(function (data) {
@@ -222,8 +219,7 @@
 	      // If we haven't hit the end of the pages yet, allow for requesting another.
 	    	store.query({
 				start: startIndex,
-				count: 3,
-				searchKeyWord: searchWord
+				count: 3
 			}).then(function (deals){
 				 arrayUtil.forEach(deals, function(deal){
 					 var widget = new DealsPageWidget(deal).placeAt(dealContainer);
