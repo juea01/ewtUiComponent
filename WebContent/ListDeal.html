@@ -146,14 +146,6 @@
 							store: productStore,
 							searchAttr: "name",
 						},"productSelect").startup();
-						
-						var filteringSelect = new  FilteringSelect({
-							id: "title",
-							name: "Car",
-							value: "Car",
-							store: productStore,
-							searchAttr: "name",
-						},"title").startup();
 					});
 				
 					
@@ -202,8 +194,16 @@
 	  <table class="pageTable" role="presentation">
 		<tr>
 			<td id="colForm">
-				<form id="myForm" enctype="multipart/form-data" >
-				<table> <tr><td><strong>Items you are selling:</strong></td><td><input id="title" name="title" /> </td></tr>				
+				<form id="myForm" enctype="multipart/form-data">
+				<table>	
+				<tr><td><strong>Items you are selling:</strong></td><td>
+				<select  data-dojo-type="dijit/form/FilteringSelect"
+				 id="title" name="title"> 
+				 <option value="Car">Car</option>
+				 <option value="Ruby">Ruby</option>
+				 <option value="Sapphire">Sapphire</option>
+				 </select>
+				 </td></tr>				
 					<tr>
 				<td valign="top">
 				<strong>Brief Description:</strong> </td><td> <input type="text" required="true" name="briefDescription" id="briefDescription" placeholder="Brief Description"
