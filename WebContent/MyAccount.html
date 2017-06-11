@@ -16,6 +16,7 @@
 				"dojo/parser",
 				"widget/StoreState",
 				"widget/ContainerWidget",
+				"widget/FooterWidget",
 				"dijit/form/Button",
 			], function(parser,StoreState) {
 				// Invoke the dojo/parser
@@ -31,37 +32,6 @@
 		</script>
 		
 		
-		
-		<!-- This is for EWTAnimation  --> 
-		<script>
-			require([
-				"widget/EWTAnimationWidget",
-			], function(parser) {
-				// Invoke the dojo/parser
-				parser.parse();
-			});
-		</script>
-			
-	
-	 
-	
-		
-		
-		
-		
-		
-	
-	
-		
-		<!-- This is for footer  --> 
-		<script>
-			require([
-				"widget/FooterWidget",
-			], function(parser) {
-				// Invoke the dojo/parser
-				parser.parse();
-			});
-		</script>
 		
 		<!-- This is for search box -->
 		<script>
@@ -135,9 +105,68 @@
 	
 	<div class = "middlealigned">
 	<h2> Your Details</h2> 
+	<script>
+
+	require(["dojo/dom", "dojo/on", "dojo/request", "dojo/parser",
+		/* dojox/ validate resources */
+		"dojox/validate/web",
+		/* basic dijit classes */ 
+		"dijit/form/TextBox", "dijit/form/ValidationTextBox", "dijit/form/DateTextBox",
+		 "dijit/form/Button", "dijit/form/RadioButton", "dijit/form/Form",
+		/* basic dojox classes */
+		"dojo/domReady!"], function(dom, on, request) {
+		var userDetail = sessionStorage.getItem('userDetail');	
+		userDetail = JSON.parse(userDetail);
+		var myform =dijit.byId('myForm'); 
+		myform.attr('value',userDetail); 
+		
+		
+		 on(myform,"submit", function(event){
+				
+				//prevent the page form navigating after submit
+				event.stopPropagation();
+				event.preventDefault();
+				
+				if(this.validate()) {
+					// Post the data to the server
+					request.post("http://localhost:8080/EWTRestServices/rest/UserServices/users", {
+						data: dojo.formToJson("myForm"),
+						timeout: 5000
+					}).then(function(response){
+						dom.byId('serverMessage').innerHTML = response;
+						
+						// Post the data to the server
+			  			request.get("http://localhost:8080/EWTRestServices/rest/UserServices/user/"+userDetail.userId, {
+			  				timeout: 5000
+			  			}).then(function(response){
+			  				console.log(response);
+			  				sessionStorage.setItem('userDetail',response);
+			  			},function(error){
+			  				console.log( error);
+			  				dom.byId('serverMessage').innerHTML = "Status Code: " + error.response.status +" Message: " + error.response.data;
+			  			});
+						
+					},function(error){
+						dom.byId('serverMessage').innerHTML = "Status Code: " + error.response.status +" Message: " + error.response.data;
+					});
+				} else {
+					alert('Form contains invalid data. Please correct first');
+					console.log("Invalid data");
+					return false;
+				}
+				
+				
+			}); 
+		
+	});
+	
+</script>
 	<div data-dojo-type="dijit/form/Form" id="myForm" data-dojo-id="myForm"
 		encType="multipart/form-data" >
+<p id="serverMessage"></p>
+ <br/>
 <table>
+<tr><td><input type="hidden" id="userId" name="userId" data-dojo-type="dijit/form/TextBox"/> </td></tr>
 <tr> 
 <td valign="top"><strong>First Name*:</strong> </td>  
 <td><input type="text" required="true" name="userName" id="userName" placeholder="Your Name"
@@ -179,24 +208,9 @@
 </td>
 </tr>
 </table>
+<button data-dojo-type="dijit/form/Button" type="submit" name="updateButton" value="Update">Update</button>
 </div>
-<script>
 
-	require(["dojo/dom", "dojo/on", "dojo/request", "dojo/dom-form", "dojo/parser",
-		/* dojox/ validate resources */
-		"dojox/validate/us", "dojox/validate/web",
-		/* basic dijit classes */
-		"dijit/form/CheckBox", "dijit/form/Textarea", "dijit/form/FilteringSelect", "dijit/form/TextBox", "dijit/form/ValidationTextBox", "dijit/form/DateTextBox", "dijit/form/TimeTextBox", "dijit/form/Button", "dijit/form/RadioButton", "dijit/form/Form", "dijit/form/DateTextBox",
-		/* basic dojox classes */
-		"dojox/form/BusyButton", "dojox/form/CheckedMultiSelect",
-		"dojo/domReady!"], function(dom, on, request, domForm) {
-		var userDetail = sessionStorage.getItem('userDetail');	
-		userDetail = JSON.parse(userDetail);
-		dijit.byId('myForm').attr('value',userDetail); 
-	}
-	);
-	
-</script>
 	</div>
 
 	
