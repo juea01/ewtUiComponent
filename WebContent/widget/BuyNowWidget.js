@@ -10,14 +10,15 @@ define ([
 "dojo/on",
 "dijit/_WidgetBase",
 "dijit/_TemplatedMixin",
-"dojo/text!./templates/BuyNowWidget.html"
-], function(declare, baseFx, lang, domStyle, mouse, on, _WidgetBase, _TemplatedMixin, template) {
+"dojo/text!./templates/BuyNowWidget.html","dijit/form/Button","dojo/dom","dojo/domReady!"
+], function(declare, baseFx, lang, domStyle, mouse, on, _WidgetBase, _TemplatedMixin, template,Button,dom) {
 	return declare ([_WidgetBase, _TemplatedMixin], {
 		dealId: "NULL",
 		dealType:"NULL",
 		title:"NULL",
 		price:"NULL",
 		description:"NULL",
+		userId:"NULL",
 		
 		baseClass: "buyNowWidget",
 		templateString: template,
@@ -36,9 +37,21 @@ define ([
 	 
 	 this.own(
 			 on(domNode, mouse.enter, lang.hitch(this, "_changeBackground", this.mouseBackgroundColor)),
-			 on(domNode, mouse.leave, lang.hitch(this,"_changeBackground",this.baseBackgroundColor)),
-			 on(domNode, "click", lang.hitch(this,"_navigateToBuyNow",this.dealId))
+			 on(domNode, mouse.leave, lang.hitch(this,"_changeBackground",this.baseBackgroundColor))
 	 );
+	 
+	 
+	 //if user id for this deal is same as user id from login user then 
+	 //show user edit button
+	 var userDetail = JSON.parse(sessionStorage.getItem('userDetail'));
+	 if (userDetail != null) {
+		 var uid = userDetail.userId;
+		 if (String(uid) == String(this.userId)) {
+			 var createButtonfunction =lang.hitch(this,"_createButton");
+			 createButtonfunction(); 
+		 }
+	 }
+	 
 	},
 	
 	_changeBackground: function(newColor) {
@@ -58,7 +71,17 @@ define ([
 			})				
 		}).play();
 		
+	},
+	
+	_createButton: function () {
+		 var editButton = new Button({
+				label: "Edit",
+				onClick: function() {
+					window.location.replace('http://localhost:8080/EWTClientUi/UpdateDeal.html');	
+				}
+			 },"editButton").startup();
 	}
+	
 	});
 });
 

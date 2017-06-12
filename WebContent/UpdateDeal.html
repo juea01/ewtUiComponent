@@ -1,0 +1,282 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Demo: Using _TemplatedMixin</title>
+	<link rel="stylesheet" href="dijit/themes/claro/claro.css" media="screen">
+	<link rel="stylesheet" href="widget/css/SomeWidget.css" media="screen">
+	<link rel="stylesheet" href="widget/css/Animation.css" media="screen">
+	
+		<script>dojoConfig = {async: false, parseOnLoad: true}</script>
+		<!-- This is for rotating banner -->
+		<script src="dojo/dojo.js"></script>
+		<script>
+			require([
+				"dojo/dom", "dojo/on", "dojo/request", "dojo/dom-form",
+				"dojo/parser",
+				"dojox/form/Uploader",
+				"dojox/form/uploader/FileList",
+				"dijit/form/Button",
+				"dojox/form/uploader/plugins/IFrame",
+				"dijit/form/TextBox",
+				"dijit/registry",
+				"widget/StoreState",
+				"dojox/validate/us", "dojox/validate/web",
+				"dijit/form/CheckBox", "dijit/form/Textarea", "dijit/form/FilteringSelect","dijit/form/ValidationTextBox", "dijit/form/DateTextBox", "dijit/form/TimeTextBox", "dijit/form/Button", "dijit/form/Form", "dijit/form/DateTextBox",
+				/* basic dojox classes */
+				"dojox/form/BusyButton", "dojox/form/CheckedMultiSelect","dojox/form/PasswordValidator",
+				"dojo/domReady!"
+			], function(dom, on, request, domForm,Parser,Uploader,FileList,Button,IFrame,TextBox,registry,StoreState) {
+				
+				var form = dom.byId("myForm");
+				dojo.connect(form,"submit", function(event){
+		  			//prevent the page form navigating after submit
+		  			event.stopPropagation();
+		  			event.preventDefault();
+		  			
+		  			// Post the data to the server
+		  			request.post("http://localhost:8080/EWTRestServices/rest/UploadServices/listDeal", {		  				
+		  				data: new FormData(this),		  				
+		  				timeout: 5000,		  				
+		  				headers: {
+		  					'Content-Type': false
+		  				}		  						  				
+		  			}).then(function(response){
+		  				response = JSON.parse(response);
+		  				sessionStorage.setItem('productId',response.dealId);
+		  				StoreState.setRedirectPage('ListDeal');
+		  				window.location.replace('http://localhost:8080/EWTClientUi/Redirect.html');
+		  			},function(error){
+		  				console.log( error);
+		  				dom.byId('errorMessage').innerHTML = "Status Code: " + error.response.status +" Message: " + error.response.data;
+		  			});
+		  			
+		  			
+		  		}); 
+				
+				Parser.parse();
+				
+				var userDetail = sessionStorage.getItem('userDetail');
+				
+				if(userDetail=== null) {
+					StoreState.storePageUrl(window.location.href);
+					 window.location.replace('http://localhost:8080/EWTClientUi/Login.html'); 
+				}
+				userDetail = JSON.parse(userDetail);
+				var userId = registry.byId("userId");
+				userId.set("value",userDetail.userId);
+				
+				plug = "HTML5";
+				var handleUpload = function(upl, node){
+
+					dojo.connect(upl, "onComplete", function(dataArray){
+						  dojo.forEach(dataArray, function(file){
+							console.log("display:", file)
+
+							var div = dojo.create('div', {className:'thumb'});
+							var span = dojo.create('span', {className:'thumbbk'}, div);
+							var img = dojo.create('img', {src:file.file}, span);
+							node.appendChild(div);
+						}); 
+					});
+				}
+				
+
+				dojo.addOnLoad(function(){
+					dojo.addClass(dojo.body(), plug);
+					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("uploader"), "reset");
+					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("title"), "reset");
+					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("price"), "reset");
+					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("briefDescription"), "reset");
+					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("description"), "reset");
+					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("currency"), "reset");
+					handleUpload(dijit.byId("uploader"), dojo.byId('colImages'));
+					
+				});
+			});
+		</script>
+		
+	
+	<!-- This is for header  --> 
+		<script>
+			require([
+				"dojo/parser",
+				"widget/ContainerWidget",
+				"dijit/form/Button",
+			], function(parser) {
+				// Invoke the dojo/parser
+				parser.parse();
+			});
+		</script>
+		
+																
+	
+	
+		
+		<!-- This is for footer  --> 
+		<script>
+			require([
+				"dojo/parser",
+				"widget/FooterWidget",
+			], function(parser) {
+				// Invoke the dojo/parser
+				parser.parse();
+			});
+		</script>
+		
+	<!-- This is for search box -->
+		<script>
+			require(["dojo","dojo/dom","dijit/form/Button","dojo/dom","dojo/store/Memory","dijit/form/FilteringSelect","widget/StoreState","dojo/store/JsonRest","dojo/domReady!"],
+					function(dojo,dom,Button,dom,Memory,FilteringSelect,StoreState,JsonRest){
+				
+					var store = new JsonRest({
+						target: "http://localhost:8080/EWTRestServices/rest/UtilityServices/productLists"
+					});
+				 
+					var results = store.query({});
+						results.then(function (productList) {
+						var productStore = new Memory({
+							data: productList
+						});
+						
+						var filteringSelect = new  FilteringSelect({
+							id: "productSelect",
+							name: "Car",
+							value: "CA",
+							store: productStore,
+							searchAttr: "name",
+						},"productSelect").startup();
+					});
+				
+					
+					
+					var mySearchButton = new Button({
+						label: "Search",
+						onClick:function(){
+							StoreState.storeSearchKeyWord(dijit.byId('productSelect').get('value'));
+						window.location.replace('http://localhost:8080/EWTClientUi/Search.html');	
+						}
+					},"searchButtonNode").startup();
+				
+					});
+		</script>			
+	</head>
+	<body class="claro">
+	<div id="container">
+	<!-- This is for header -->
+	<div data-dojo-type="widget/ContainerWidget">
+		<div class="logo_div">
+			<div>EWorldTradeLogo</div>
+		</div>
+		<div class="search_div">
+			<input id="productSelect"/>
+			<button id="searchButtonNode" type="button" ><img src="resources/search.png" class="searchButton" height="30" width="50"/></button>
+		</div>
+		<div class="login_Supplier_Wrapper_div">
+		  <div class="listDeal_div">
+			<a href="ListDeal.html">List Deal</a>
+	      </div>
+		  <div class="login_div">
+			<a href="Login.html">Login In</a>  | <a href="Registration.html">Join Free</a>
+		  </div>
+		</div>
+		
+	</div>
+	
+<div class="bodyContentWidget">	
+<div class = "middleAlignedFormBox">
+<h1> List Deal</h1>
+<p style="font-size: small;"> 
+*Denotes required fields. Page will simply reload on a successful form submission.
+</p>
+<div id="errorMessage"></div>
+<!-- This is for List Deal Form -->
+	  <table class="pageTable" role="presentation">
+		<tr>
+			<td id="colForm">
+				<form id="myForm" enctype="multipart/form-data">
+				<table>	
+				<tr><td><strong>Items you are selling:</strong></td><td>
+				<select  data-dojo-type="dijit/form/FilteringSelect"
+				 id="title" name="title"> 
+				 <option value="Car">Car</option>
+				 <option value="Ruby">Ruby</option>
+				 <option value="Sapphire">Sapphire</option>
+				 </select>
+				 </td></tr>				
+					<tr>
+				<td valign="top">
+				<strong>Brief Description:</strong> </td><td> <input type="text" required="true" name="briefDescription" id="briefDescription" placeholder="Brief Description"
+				data-dojo-type="dijit/form/ValidationTextBox"  style="width: 34em;" missingMessage="Ooops! You forgot brief description."/>
+				</td></tr>
+				<tr><td valign="top">
+				<strong>Your Price:</strong></td><td>  <input type="text" required="true" name="price" id="price" placeholder="Your price here"
+				data-dojo-type="dijit/form/ValidationTextBox" style="width: 10em;" missingMessage="Ooops! You forgot price."/>
+				*Please note that your price should be at least 3% lower than original price!!</td></tr>
+				<tr> 
+				<td valign="top"><strong>Please select currency:</strong> </td>
+				<td>
+				<select name="currency" id="currency" style="width: 5em;" data-dojo-type="dijit/form/FilteringSelect">
+				<option value="US">US</option>
+				<option value="NZ">NZ</option>
+				</select>
+				*Currently you can buy and sell either in NZ or US dollar
+				</td>
+				</tr>
+				<tr><td valign="top">
+				<strong>Please enter full description here:</strong></td><td><textarea id="description" name="description" placeholder="Please write your full description here." data-dojo-type="dijit/form/SimpleTextarea" rows="6" cols="70" style="width:auto;" ></textarea>
+				</td></tr>
+				<tr><td><input type="hidden" id="userId" name="userId" data-dojo-type="dijit/form/TextBox"/> </td></tr>
+				<tr><td></td><td>
+				<input class="browseButton" name="uploadedfile" multiple="true" type="file" dojoType="dojox.form.Uploader" label="Select Images" id="uploader">
+				</td></tr>
+				<tr><td></td><td>
+				<input type="button" id="remBtn" label="Clear" dojoType="dijit.form.Button" />
+				<input type="submit" label="Submit" dojoType="dijit.form.Button" />
+				</td></tr>
+				<tr><td></td><td>
+				<div id="files" dojoType="dojox.form.uploader.FileList" uploaderId="uploader"></div>
+				</form>
+				</table>
+			</td>
+			<td id="colImages">
+			</td>
+		</tr>
+	</table>
+</div>
+</div>
+	<!-- This is for footer -->
+	<div data-dojo-type="widget/FooterWidget">
+		<div class="footer_group1">
+			<div><a href="AboutUs.html">About EWorldTrade</a></div>
+			<div class="vertical_space">  </div>
+			<div>Careers</div>
+		</div>
+		
+		<div class="footer_group2">
+			<div>Sell on EWorldTrade</div>
+			<div class="vertical_space">  </div>
+			<div>Own Store on EWorldTrade</div>
+		</div>
+		
+		<div class="footer_group3">
+			<div>Advertise</div>
+			<div class="vertical_space">  </div>
+			<div>Become Supplier</div>
+		</div>
+		
+		<div class="footer_group4">
+			<div>EWorldTrade Policy</div>
+			<div class="vertical_space">  </div>
+			<div>Return Goods</div>
+			<div class="vertical_space">  </div>
+			<div>Dispute Center</div>
+			<div class="vertical_space">  </div>
+			<div>Help</div>
+		</div>
+	</div>
+		
+</div>		
+		
+	</body>
+</html>
