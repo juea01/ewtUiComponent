@@ -53,8 +53,16 @@ define([
 	
 	getRedirectPage: function () {
 		return sessionStorage.getItem('redirectPage');
+	},
+	
+	setDealDetail: function (dealDetail){
+		sessionStorage.setItem('dealDetail',dealDetail);
+	},
+	
+	getDealDetail: function () {
+		return sessionStorage.getItem('dealDetail');
 	}
-		
+	
 	};
 	
 });

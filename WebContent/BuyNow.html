@@ -130,8 +130,10 @@ function (dojo, dijit, parser, ifrs, Gallery,request, dom, arrayUtil, BuyNowWidg
 	 }
 	 
 	 request (url+productId, {
-		 handleAs: "json"
+		 
 	 }).then(function(result){
+		 StoreState.setDealDetail(result);
+		 result = JSON.parse(result);
 		 var buyNowContainer = dom.byId("buyNowContainer");
 	     var widget = (isGemJewelleryId === "true") ? new BuyNowGemJewelleryWidget(result).placeAt(buyNowContainer) : new BuyNowWidget(result).placeAt(buyNowContainer);	     
 

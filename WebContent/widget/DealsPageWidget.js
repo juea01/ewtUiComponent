@@ -15,7 +15,7 @@ define ([
 	return declare ([_WidgetBase, _TemplatedMixin], {
 		dealId: "NULL",
 		dealType:"NULL",
-		title:"NULL",
+		briefDescription:"NULL",
 		price:"NULL",
 		
 		baseClass: "dealsWidget",
