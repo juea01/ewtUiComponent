@@ -2,17 +2,17 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Demo: Using _TemplatedMixin</title>
+		<title>Update Deal</title>
 	<link rel="stylesheet" href="dijit/themes/claro/claro.css" media="screen">
 	<link rel="stylesheet" href="widget/css/SomeWidget.css" media="screen">
 	<link rel="stylesheet" href="widget/css/Animation.css" media="screen">
 	
-		<script>dojoConfig = {async: false, parseOnLoad: true}</script>
+		<script>dojoConfig = {async: true, parseOnLoad: true}</script>
 		<!-- This is for rotating banner -->
 		<script src="dojo/dojo.js"></script>
 		<script>
 			require([
-				"dojo/dom", "dojo/on", "dojo/request", "dojo/dom-form",
+				"dojo/dom", "dojo/dom-construct","dojo/_base/array","dojo/on", "dojo/request", "dojo/dom-form",
 				"dojo/parser",
 				"dojox/form/Uploader",
 				"dojox/form/uploader/FileList",
@@ -22,21 +22,74 @@
 				"dijit/registry",
 				"widget/StoreState",
 				"dojox/validate/us", "dojox/validate/web",
-				"dijit/form/CheckBox", "dijit/form/Textarea", "dijit/form/FilteringSelect","dijit/form/ValidationTextBox", "dijit/form/DateTextBox", "dijit/form/TimeTextBox", "dijit/form/Button", "dijit/form/Form", "dijit/form/DateTextBox",
+				"dijit/form/CheckBox", "dijit/form/Textarea", "dijit/form/FilteringSelect","dijit/form/ValidationTextBox", "dijit/form/DateTextBox", 
+				"dijit/form/TimeTextBox", "dijit/form/Button", "dijit/form/Form", "dijit/form/DateTextBox",
 				/* basic dojox classes */
 				"dojox/form/BusyButton", "dojox/form/CheckedMultiSelect","dojox/form/PasswordValidator",
 				"dojo/domReady!"
-			], function(dom, on, request, domForm,Parser,Uploader,FileList,Button,IFrame,TextBox,registry,StoreState) {
+			], function(dom,domConstruct,arrayUtil,on,request,domForm,Parser,Uploader,FileList,Button,IFrame,TextBox,registry,StoreState) {
 				
-				var form = dom.byId("myForm");
-				dojo.connect(form,"submit", function(event){
+				var form = dijit.byId("myForm");
+				
+				//prepoulate form with deal data
+				var dealDetail = StoreState.getDealDetail();
+				dealDetail = JSON.parse(dealDetail); 
+				form.attr('value',dealDetail); 
+				
+				// for displaying existing images
+				var ul = domConstruct.create("ul",null,"existingImages","first");
+				var existingImages = [];
+				arrayUtil.forEach(dealDetail.images, function(data){
+					var lastIndex = data.lastIndexOf('/');
+					var image = data.slice(lastIndex+1);
+					existingImages.push(image);
+					domConstruct.create("li",{innerHTML: "<label>"+image +"</label>"+ "<button id='delete' class='delete'>delete</button"}, ul);
+				});
+				
+			on(dom.byId("existingImages"),".delete:click",function(event){
+				event.stopPropagation();
+				event.preventDefault();
+				var imageName = this.previousSibling.textContent;
+				console.log(imageName);
+				var index = arrayUtil.indexOf(existingImages,imageName) 
+				existingImages.splice(index,1);
+				this.parentElement.remove();
+				
+			});
+								
+				
+				on(form,"submit", function(event){
 		  			//prevent the page form navigating after submit
 		  			event.stopPropagation();
 		  			event.preventDefault();
 		  			
+		  			
+		  		//loop through form elements to append to newly created FormData()
+		  			//append form data, would there be a way to send form data as native type (multipart/form-data) in dojo
+		  			var formData = new FormData();
+					var inputElements = event.target.elements;
+					for (var i = 0; i<inputElements.length; i++){
+						console.log(inputElements[i].type + inputElements[i].name + inputElements[i].value );
+						if(inputElements[i].name =="uploadedfiles[]") {
+							for (var j=0, f;f=inputElements[i].files[j];j++) {
+								formData.append(inputElements[i].name,f,f.name);
+								console.log(f.name);
+							}
+						} else if(inputElements[i].name =="price" || inputElements[i].name =="currency"
+								||inputElements[i].name =="briefDescription" || inputElements[i].name == "dealType" || inputElements[i].name == "userId"
+								|| inputElements[i].name == "description" || inputElements[i].name == "dealId"){
+							 formData.append(inputElements[i].name,inputElements[i].value); 
+						}
+					}
+					
+					 formData.append("existingImages[]",existingImages);
+					/* arrayUtil.forEach(existingImages, function(data){
+						 formData.append("existingImages[]",null,data);
+					}); */
+		  			
 		  			// Post the data to the server
-		  			request.post("http://localhost:8080/EWTRestServices/rest/UploadServices/listDeal", {		  				
-		  				data: new FormData(this),		  				
+		  			 request.post("http://localhost:8080/EWTRestServices/rest/DealServices/updateDeal", {		  				
+		  				data: formData,		  				
 		  				timeout: 5000,		  				
 		  				headers: {
 		  					'Content-Type': false
@@ -44,27 +97,17 @@
 		  			}).then(function(response){
 		  				response = JSON.parse(response);
 		  				sessionStorage.setItem('productId',response.dealId);
-		  				StoreState.setRedirectPage('ListDeal');
+		  				StoreState.setRedirectPage('UpdateDeal');
 		  				window.location.replace('http://localhost:8080/EWTClientUi/Redirect.html');
 		  			},function(error){
 		  				console.log( error);
 		  				dom.byId('errorMessage').innerHTML = "Status Code: " + error.response.status +" Message: " + error.response.data;
-		  			});
+		  			}); 
 		  			
 		  			
 		  		}); 
 				
 				Parser.parse();
-				
-				var userDetail = sessionStorage.getItem('userDetail');
-				
-				if(userDetail=== null) {
-					StoreState.storePageUrl(window.location.href);
-					 window.location.replace('http://localhost:8080/EWTClientUi/Login.html'); 
-				}
-				userDetail = JSON.parse(userDetail);
-				var userId = registry.byId("userId");
-				userId.set("value",userDetail.userId);
 				
 				plug = "HTML5";
 				var handleUpload = function(upl, node){
@@ -81,18 +124,6 @@
 					});
 				}
 				
-
-				dojo.addOnLoad(function(){
-					dojo.addClass(dojo.body(), plug);
-					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("uploader"), "reset");
-					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("title"), "reset");
-					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("price"), "reset");
-					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("briefDescription"), "reset");
-					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("description"), "reset");
-					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("currency"), "reset");
-					handleUpload(dijit.byId("uploader"), dojo.byId('colImages'));
-					
-				});
 			});
 		</script>
 		
@@ -102,6 +133,7 @@
 			require([
 				"dojo/parser",
 				"widget/ContainerWidget",
+				"widget/FooterWidget",
 				"dijit/form/Button",
 			], function(parser) {
 				// Invoke the dojo/parser
@@ -111,18 +143,6 @@
 		
 																
 	
-	
-		
-		<!-- This is for footer  --> 
-		<script>
-			require([
-				"dojo/parser",
-				"widget/FooterWidget",
-			], function(parser) {
-				// Invoke the dojo/parser
-				parser.parse();
-			});
-		</script>
 		
 	<!-- This is for search box -->
 		<script>
@@ -190,15 +210,16 @@
 *Denotes required fields. Page will simply reload on a successful form submission.
 </p>
 <div id="errorMessage"></div>
-<!-- This is for List Deal Form -->
+<!-- This is for Update Deal Form -->
 	  <table class="pageTable" role="presentation">
 		<tr>
 			<td id="colForm">
-				<form id="myForm" enctype="multipart/form-data">
+				<form data-dojo-type="dijit/form/Form" id="myForm" data-dojo-id="myForm" encType="multipart/form-data" action="" method="">
 				<table>	
+				<tr><td><input type="hidden" id="dealId" name="dealId" data-dojo-type="dijit/form/TextBox"/> </td></tr>
 				<tr><td><strong>Items you are selling:</strong></td><td>
 				<select  data-dojo-type="dijit/form/FilteringSelect"
-				 id="title" name="title"> 
+				 id="dealType" name="dealType"> 
 				 <option value="Car">Car</option>
 				 <option value="Ruby">Ruby</option>
 				 <option value="Sapphire">Sapphire</option>
@@ -227,6 +248,7 @@
 				<strong>Please enter full description here:</strong></td><td><textarea id="description" name="description" placeholder="Please write your full description here." data-dojo-type="dijit/form/SimpleTextarea" rows="6" cols="70" style="width:auto;" ></textarea>
 				</td></tr>
 				<tr><td><input type="hidden" id="userId" name="userId" data-dojo-type="dijit/form/TextBox"/> </td></tr>
+				<tr><td><strong>Existing Images:</strong></td><td><div id="existingImages"></div> </td> </tr>
 				<tr><td></td><td>
 				<input class="browseButton" name="uploadedfile" multiple="true" type="file" dojoType="dojox.form.Uploader" label="Select Images" id="uploader">
 				</td></tr>
