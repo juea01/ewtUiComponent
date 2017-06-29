@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<title>Update Deal</title>
 	<link rel="stylesheet" href="dijit/themes/claro/claro.css" media="screen">
-	<link rel="stylesheet" href="widget/css/SomeWidget.css" media="screen">
+	<link rel="stylesheet" href="widget/css/MainStyle.css" media="screen">
 	<link rel="stylesheet" href="widget/css/Animation.css" media="screen">
 	
 		<script>dojoConfig = {async: true, parseOnLoad: true}</script>
@@ -37,7 +37,7 @@
 				form.attr('value',dealDetail); 
 				
 				// for displaying existing images
-				var ul = domConstruct.create("ul",null,"existingImages","first");
+				var ul = domConstruct.create("ul",{className:"existingImage"},"existingImages","first");
 				var existingImages = [];
 				arrayUtil.forEach(dealDetail.images, function(data){
 					var lastIndex = data.lastIndexOf('/');

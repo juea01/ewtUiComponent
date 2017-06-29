@@ -19,7 +19,7 @@ define([
 
 		//	define an onClick handler
 		_onClick: function(){
-				window.location.replace('http://localhost:8080/EWTClientUi/Deals.html');
+				window.location.replace('http://localhost:8080/EWTClientUi/AboutUs.html');
 		},
 
 		postCreate: function(){

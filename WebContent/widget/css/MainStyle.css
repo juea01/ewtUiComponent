@@ -428,3 +428,21 @@ img {
   text-align: center;
   padding: 10px 20px;
 }
+
+
+/*
+decorate list
+*/
+
+ul.existingImage{
+	list-style: none outside none;
+	display: table;
+	border-spacing: 2px;
+}
+ul.existingImage > li{
+	display:table-row;
+}
+ul.existingImage > li > label,button {
+	display:table-cell;
+	cursor:pointer;
+}
