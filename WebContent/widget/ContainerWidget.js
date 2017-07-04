@@ -20,12 +20,7 @@ define([
 
 		//	define an onClick handler
 		_onClick: function(){
-			if(this._firstClicked){
-				this.titleNode.innerHTML = this.title + " was clicked " + (++this._counter) + " timeszzzzzz";
-			} else {
-				this.titleNode.innerHTML = this.title + " was clicked!";
-				this._firstClicked = true;
-			}
+			
 		},
 
 		postCreate: function(){

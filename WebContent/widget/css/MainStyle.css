@@ -4,12 +4,14 @@
 For header
 */
 .headerWidget {
-	border: 1px solid black;
-	width: 100%;
+	border: 1px solid green;
+	width: 95%;
 	height: 170px;
 	overflow:hidden;
-	align:center;
+	margin:auto;
+	margin-top:2px;
 	padding:10px;
+	background-color:#ffffe0;
 	}
 	
 .logo_div{
@@ -74,10 +76,12 @@ Body Content Widget
 */
 .bodyContentWidget {
 	padding-bottom:170px;
-	width: 100%;
+	padding:10px;
+	width: 95%;
+	margin:auto;
 	height:100%;
 	overflow:hidden;
-	align:center;
+	background-color:#ffffe0;
 	}
 			
 /*
@@ -190,9 +194,12 @@ For footer
 	position: absolute;
 	bottom: 0;
 	left:0;
-	width: 100%;
+	width: 95%;
+	margin-left:1.8%;
+	padding:10px;
 	height: 170px;
 	border: 1px solid green;
+	background-color:#ffffe0;
 	}
 	
 	.footer_group1{
@@ -242,6 +249,7 @@ body{
 	padding:0;
 	height:100%;
 	font-size: 100%;
+	background-color: #000000;
 	
 }
 
