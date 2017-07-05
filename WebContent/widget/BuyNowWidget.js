@@ -25,7 +25,7 @@ define ([
 		
 		mouseAnim: null,
 		
-		baseBackgroundColor: "#fff",
+		baseBackgroundColor: "#acf708",
 		mouseBackgroundColor: "#def",
 		mouseClickBackgroundColor: "#fb9f18",
 	

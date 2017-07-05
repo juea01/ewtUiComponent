@@ -17,16 +17,19 @@ define ([
 		dealType:"NULL",
 		briefDescription:"NULL",
 		price:"NULL",
+		currency:"NULL",
+		images: require.toUrl("./resources/no-image.jpg"),
+		
 		
 		baseClass: "dealsWidget",
 		templateString: template,
 		
 		mouseAnim: null,
 		
-		baseBackgroundColor: "#fff",
+		baseBackgroundColor: "#acf708",
 		mouseBackgroundColor: "#def",
 		mouseClickBackgroundColor: "#fb9f18",
-	
+		
 			
 	postCreate: function() {
 	 var domNode = this.domNode;
@@ -66,6 +69,17 @@ define ([
 		window.location.replace('http://localhost:8080/EWTClientUi/BuyNow.html');
 		
 	},
+	
+	_setImagesAttr: function(images) {
+		if (null != images) {
+			this._set("images", images[0]);
+			this.imageNode.src = images[0];		
+		} else {
+			this._set("images", "./resources/no-image.jpg");
+			this.imageNode.src ="./resources/no-image.jpg";
+		
+		}
+	}
 		
 	});
 });

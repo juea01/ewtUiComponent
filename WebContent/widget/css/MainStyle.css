@@ -53,7 +53,7 @@ For header
 .listDeal_div {
 	display:inline-block;
 	vertical-align:top;
-	margin-left:5%;	
+	margin-left:20%;	
 }
 .myaccountGreetingWrapper_div {
 	clear:left;
@@ -113,6 +113,13 @@ Deal Widget
 		margin: 0px;
 	}
 
+.dealsWidgetImage {
+		float:left;
+		margin: 4px 12px 6px 0px;
+		max-width: 110px;
+		max-height: 110px;
+	}
+	
 
 /*
 Buy Now Widget

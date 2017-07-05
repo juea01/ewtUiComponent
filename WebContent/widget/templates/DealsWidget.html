@@ -1,10 +1,11 @@
 
 
 
-<div>
+<div class="${baseClass}">
 	<h3 data-dojo-attach-point="dealIdNode">${dealId}</h3>
 	<h3 data-dojo-attach-point="dealTypeNode">${dealType}</h3>
+	<p data-dojo-attach-point="priceNode">$ ${price} ${currency}</p>
+	<img class="${baseClass}Image" src="" data-dojo-attach-point="imageNode">
 	<p data-dojo-attach-point="briefDescriptionNode">${briefDescription}</p>
-	<p data-dojo-attach-point="priceNode">${price}</p>
 </div>
 
