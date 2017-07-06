@@ -446,7 +446,13 @@ ul.existingImage > li > label,button {
 }
 
 
-/* Just Test remove it*/
-#headerTest{
-	height: 175px;
+/* Dojo tab*/
+/* .dijitChecked.dijitTab .tabLabel {
+    color:red;
 }
+ */
+ 
+ .dijitTabContainerTop-dijitContentPane.myTab {
+    background-color:#ffffe0;
+ }
+
