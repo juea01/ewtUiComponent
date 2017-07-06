@@ -109,7 +109,7 @@
 				
 				Parser.parse();
 				
-				plug = "HTML5";
+				 plug = "HTML5";
 				var handleUpload = function(upl, node){
 
 					dojo.connect(upl, "onComplete", function(dataArray){
@@ -122,7 +122,20 @@
 							node.appendChild(div);
 						}); 
 					});
-				}
+				} 
+				
+				dojo.addOnLoad(function(){
+					dojo.addClass(dojo.body(), plug);
+					dojo.connect(dijit.byId("clrImages"), "onClick", dijit.byId("uploader"), "reset");
+					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("uploader"), "reset");
+					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("dealType"), "reset");
+					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("price"), "reset");
+					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("briefDescription"), "reset");
+					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("description"), "reset");
+					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("currency"), "reset");
+					handleUpload(dijit.byId("uploader"), dojo.byId('colImages')); 
+					
+				});
 				
 			});
 		</script>
@@ -260,6 +273,7 @@
 				<tr><td><strong>Existing Images:</strong></td><td><div id="existingImages"></div> </td> </tr>
 				<tr><td></td><td>
 				<input class="browseButton" name="uploadedfile" multiple="true" type="file" dojoType="dojox.form.Uploader" label="Select Images" id="uploader">
+				<input type="button" id="clrImages" label="Clear Selected Images" dojoType="dijit.form.Button" />
 				</td></tr>
 				<tr><td></td><td>
 				<input type="button" id="remBtn" label="Clear" dojoType="dijit.form.Button" />

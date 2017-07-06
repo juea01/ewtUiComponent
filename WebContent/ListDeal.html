@@ -84,8 +84,9 @@
 
 				dojo.addOnLoad(function(){
 					dojo.addClass(dojo.body(), plug);
+					dojo.connect(dijit.byId("clrImages"), "onClick", dijit.byId("uploader"), "reset");
 					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("uploader"), "reset");
-					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("title"), "reset");
+					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("dealType"), "reset");
 					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("price"), "reset");
 					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("briefDescription"), "reset");
 					dojo.connect(dijit.byId("remBtn"), "onClick", dijit.byId("description"), "reset");
@@ -238,7 +239,7 @@
 				<tr><td><input type="hidden" id="userId" name="userId" data-dojo-type="dijit/form/TextBox"/> </td></tr>
 				<tr><td></td><td>
 				<input class="browseButton" name="uploadedfile" multiple="true" type="file" dojoType="dojox.form.Uploader" label="Select Images" id="uploader">
-				</td></tr>
+				<input type="button" id="clrImages" label="Clear Selected Images" dojoType="dijit.form.Button" /></td></tr>
 				<tr><td></td><td>
 				<input type="button" id="remBtn" label="Clear" dojoType="dijit.form.Button" />
 				<input type="submit" label="Submit" dojoType="dijit.form.Button" />
