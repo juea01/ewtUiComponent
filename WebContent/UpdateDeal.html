@@ -29,6 +29,8 @@
 				"dojo/domReady!"
 			], function(dom,domConstruct,arrayUtil,on,request,domForm,Parser,Uploader,FileList,Button,IFrame,TextBox,registry,StoreState) {
 				
+				Parser.parse();
+				
 				var form = dijit.byId("myForm");
 				
 				//prepoulate form with deal data
@@ -107,7 +109,6 @@
 		  			
 		  		}); 
 				
-				Parser.parse();
 				
 				 plug = "HTML5";
 				var handleUpload = function(upl, node){
