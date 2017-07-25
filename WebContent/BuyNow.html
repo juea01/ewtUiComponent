@@ -18,11 +18,14 @@
 		<script>
 			require([
 				"dojo/parser",
+				"widget/Helper","widget/StoreState",
 				"widget/ContainerWidget",
-				"dijit/form/Button",
-			], function(parser) {
+				"dojo/domReady!"
+			], function(parser,Helper,StoreState) {
 				// Invoke the dojo/parser
 				parser.parse();
+				var userDetail = StoreState.getUserDetail();
+				Helper.greetUser(userDetail,document);
 			});
 		</script>
 		
@@ -106,7 +109,7 @@
 			<a href="index.html">Home</a> | <a href="MyAccount.html">MyAccount</a>
 		</div>
 		<div class="greeting_div">
-			<h4>Hi Ar</h4>
+			<h4></h4>
 		 </div>
 		</div>
 		

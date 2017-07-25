@@ -25,7 +25,7 @@
 				"dojo/parser",
 				"widget/StoreState",
 				"dojo","dojo/dom","dijit/form/Button","dojo/dom","dojo/store/Memory",
-				"dijit/form/FilteringSelect","widget/StoreState","dojo/store/JsonRest",
+				"dijit/form/FilteringSelect","widget/StoreState","widget/Helper","dojo/store/JsonRest",
 				"dojo/on", "dojo/request",
 				/* dojox/ validate resources */
 				"dojox/validate/web",
@@ -36,15 +36,18 @@
 				"widget/FooterWidget",
 				"dijit/layout/TabContainer", "dijit/layout/ContentPane",
 				"dojo/domReady!"
-			], function(parser,StoreState,dojo,dom,Button,dom,Memory,FilteringSelect,StoreState,JsonRest,on, request) {
+			], function(parser,StoreState,dojo,dom,Button,dom,Memory,FilteringSelect,StoreState,Helper,JsonRest,on, request) {
 				// Invoke the dojo/parser
 				parser.parse();
-				var userDetail = sessionStorage.getItem('userDetail');
+				var userDetail = StoreState.getUserDetail();
 				
 				if(userDetail=== null) {
 					StoreState.storePageUrl(window.location.href);
 					 window.location.replace('http://localhost:8080/EWTClientUi/Login.html'); 
 				}
+				
+				
+				Helper.greetUser(userDetail,document);
 				
 				<!-- This is for search box -->
 				var store = new JsonRest({
@@ -107,7 +110,7 @@
 					  				timeout: 5000
 					  			}).then(function(response){
 					  				console.log(response);
-					  				sessionStorage.setItem('userDetail',response);
+					  				StoreState.setUserDetail();
 					  			},function(error){
 					  				console.log( error);
 					  				dom.byId('serverMessage').innerHTML = "Status Code: " + error.response.status +" Message: " + error.response.data;
@@ -151,7 +154,7 @@
 			<a href="index.html">Home</a> | <a href="MyAccount.html">MyAccount</a>
 		</div>
 		<div class="greeting_div">
-			<h4>Hi Ar</h4>
+			<h4></h4>
 		 </div>
 		</div>
 		

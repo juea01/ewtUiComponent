@@ -97,7 +97,7 @@
 			<a href="index.html">Home</a> | <a href="MyAccount.html">MyAccount</a>
 		</div>
 		<div class="greeting_div">
-			<h4>Hi Ar</h4>
+			<h4></h4>
 		 </div>
 		</div>
 		
@@ -127,9 +127,9 @@
  
  <script>
  
- require(["dojo/dom", "dojo/on", "dojo/request", "dojo/dom-form", "dojo/parser",
+ require(["dojo/dom", "dojo/on", "dojo/request", "dojo/dom-form", "widget/StoreState","dojo/parser",
   		"dojox/form/BusyButton",
-  		"dojo/domReady!"], function(dom, on, request, domForm) {
+  		"dojo/domReady!"], function(dom, on, request, domForm,StoreState) {
   		
   		
   		var form = dom.byId("formNode");
@@ -148,7 +148,7 @@
   				
   			}).then(function(response){
   				console.log(response);
-  				sessionStorage.setItem('userDetail',response);
+  				StoreState.setUserDetail(response);
   				var url = sessionStorage.getItem('previousPageUrl');
   				console.log("This is URl"+url);
   				window.location.replace(url);

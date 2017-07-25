@@ -61,6 +61,14 @@ define([
 	
 	getDealDetail: function () {
 		return sessionStorage.getItem('dealDetail');
+	},
+	
+	setUserDetail: function(response){
+		sessionStorage.setItem('userDetail',response);
+	},
+	
+	getUserDetail: function(){
+		return sessionStorage.getItem('userDetail');
 	}
 	
 	};
