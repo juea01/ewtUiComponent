@@ -7,6 +7,7 @@ define([
 ],function(declare, _WidgetBase, _OnDijitClickMixin, _TemplatedMixin, template){
 
 	return declare([_WidgetBase, _OnDijitClickMixin, _TemplatedMixin], {
+		//This might not be needed as for header and footer normal css and html container would suffice?
 		//	set our template
 		templateString: template,
 
@@ -24,7 +25,7 @@ define([
 		},
 
 		postCreate: function(){
-			this.titleNode.innerHTML = this.title;
+
 		}
 	});
 });
