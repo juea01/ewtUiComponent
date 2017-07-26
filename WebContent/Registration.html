@@ -30,6 +30,7 @@ table {border-collapse: collapse; border-spacing: 0px;}
 				"dojo/parser",
 				"widget/Helper","widget/StoreState",
 				"widget/ContainerWidget",
+				"widget/FooterWidget",
 				"dijit/form/Button","dojo/domReady!"
 			], function(parser,Helper,StoreState) {
 				// Invoke the dojo/parser
@@ -39,19 +40,7 @@ table {border-collapse: collapse; border-spacing: 0px;}
 			});
 		</script>
 		
-																
-	
-	
-		
-		<!-- This is for footer  --> 
-		<script>
-			require([
-				"widget/FooterWidget",
-			], function(parser) {
-				// Invoke the dojo/parser
-				parser.parse();
-			});
-		</script>
+															
 <!-- This is for search box -->
 		<script>
 			require(["dojo","dojo/dom","dijit/form/Button","dojo/dom","dojo/store/Memory","dijit/form/FilteringSelect","widget/StoreState","dojo/store/JsonRest","dojo/domReady!"],
@@ -167,19 +156,8 @@ table {border-collapse: collapse; border-spacing: 0px;}
  </script> -->
  
 
-<form id="formNode">
 
-<!-- 
-<script type="dojo/method" event="onSubmit">
-	if(this.validate()) {
-	return confrim('Form is valid, press OK to submit');
-} else {
-	alert('Form contains invalid data. Please correct first');
-	return false;
-}
-return true;
-</script>
- -->
+<form data-dojo-type="dijit/form/Form" id="formNode" data-dojo-id="formNode" action="" method="">
  
  <p id="errorMessage"></p>
  <br/>
@@ -205,7 +183,7 @@ return true;
 <tr> 
 <td valign="top"><strong>Please select your gender:</strong> </td>
 <td>
-<input type="radio" id="radioMale" name="gender" value="Male" data-dojo-type="dijit/form/RadioButton"/>
+<input type="radio" id="radioMale" name="gender" checked value="Male" data-dojo-type="dijit/form/RadioButton"/>
 <label for="radioMale">Male</label>
 &nbsp;&nbsp;&nbsp;
 <input type="radio" id="radioFemale" name="gender" value="Female" data-dojo-type="dijit/form/RadioButton"/>
@@ -237,7 +215,7 @@ return true;
 <br/>
 <!-- Submit button --> 
  <input type="button" id="remBtn" label="Clear" dojoType="dijit.form.Button" />
- <button class="button" type="submit">Submit</button>
+ <input type="submit" label="Submit" dojoType="dijit.form.Button" />
 </form>
 </div>
 <script>
@@ -246,7 +224,9 @@ return true;
 		/* dojox/ validate resources */
 		"dojox/validate/us", "dojox/validate/web",
 		/* basic dijit classes */
-		"dijit/form/CheckBox", "dijit/form/Textarea", "dijit/form/FilteringSelect", "dijit/form/TextBox", "dijit/form/ValidationTextBox", "dijit/form/DateTextBox", "dijit/form/TimeTextBox", "dijit/form/Button", "dijit/form/RadioButton", "dijit/form/Form", "dijit/form/DateTextBox",
+		"dijit/form/CheckBox", "dijit/form/Textarea", "dijit/form/FilteringSelect", "dijit/form/TextBox", 
+		"dijit/form/ValidationTextBox", "dijit/form/DateTextBox", "dijit/form/TimeTextBox", "dijit/form/Button", 
+		"dijit/form/RadioButton", "dijit/form/Form", "dijit/form/DateTextBox",
 		/* basic dojox classes */
 		"dojox/form/BusyButton", "dojox/form/CheckedMultiSelect","dojox/form/PasswordValidator",
 		"dojo/domReady!"], function(dom, on, request, domForm,StoreState) {
@@ -261,33 +241,32 @@ return true;
 		
 		resetValues();
 		
-		
-		var form = dom.byId("formNode");
+		var form = dijit.byId("formNode");
 		 
-		 dojo.connect(form,"submit", function(event){
+		 on(form,"submit", function(event){
 		
 			//prevent the page form navigating after submit
 			event.stopPropagation();
 			event.preventDefault();
 			
-			// Post the data to the server
-			request.post("http://localhost:8080/EWTRestServices/rest/UserServices/users", {
-				data: dojo.formToJson("formNode"),
-				timeout: 5000
-			}).then(function(response){
-				StoreState.setRedirectPage('Registration');
-				window.location.replace('http://localhost:8080/EWTClientUi/Redirect.html');
-			},function(error){
-				dom.byId('errorMessage').innerHTML = "Status Code: " + error.response.status +" Message: " + error.response.data;
-			});
-			
+			if(form.validate()) {
+				// Post the data to the server
+				request.put("http://localhost:8080/EWTRestServices/rest/UserServices/users", {
+					data: dojo.formToJson(form.domNode),
+					timeout: 5000
+				}).then(function(response){
+					StoreState.setRedirectPage('Registration');
+					window.location.replace('http://localhost:8080/EWTClientUi/Redirect.html');
+				},function(error){
+					dom.byId('errorMessage').innerHTML = "Status Code: " + error.response.status +" Message: " + error.response.data;
+				});
+			} else {
+				alert('Form contains invalid data. Please correct first');
+				return false;
+			}	
 			
 		}); 
-		 
-		 
-	
-	}
-	);
+	});
 	
 </script>
 </div>
