@@ -21,40 +21,98 @@
 				"dijit/form/TextBox",
 				"dijit/registry",
 				"widget/StoreState",
-				"dojox/validate/us", "dojox/validate/web",
-				"dijit/form/CheckBox", "dijit/form/Textarea", "dijit/form/FilteringSelect","dijit/form/ValidationTextBox", "dijit/form/DateTextBox", "dijit/form/TimeTextBox", "dijit/form/Button", "dijit/form/Form", "dijit/form/DateTextBox",
+				"dojox/validate/web","dojox/validate/us","dojox/validate/check",
+				"dijit/form/CheckBox", "dijit/form/Textarea", "dijit/form/FilteringSelect","dijit/form/ValidationTextBox", "dijit/form/NumberTextBox",
+				"dijit/form/DateTextBox", "dijit/form/TimeTextBox", "dijit/form/Button", "dijit/form/Form", "dijit/form/DateTextBox",
 				/* basic dojox classes */
 				"dojox/form/BusyButton", "dojox/form/CheckedMultiSelect","dojox/form/PasswordValidator",
 				"dojo/domReady!"
-			], function(dom, on, request, domForm,Parser,Uploader,FileList,Button,IFrame,TextBox,registry,StoreState) {
+			], function(dom, on, request, domForm,Parser,Uploader,FileList,Button,IFrame,TextBox,registry,StoreState,validate) {
 				
-				var form = dom.byId("myForm");
-				dojo.connect(form,"submit", function(event){
+				Parser.parse();
+				
+				var form = dijit.byId("myForm");
+				var extension = /.gif|.png|.jpeg|.jpg/;
+				 var fileName = /^[a-z_?0-9]+\.(png|jpe?g|gif)$/i;
+				var errorMessage = "";
+				var valid = true;
+				
+				on(form,"submit", function(event){
 		  			//prevent the page form navigating after submit
 		  			event.stopPropagation();
 		  			event.preventDefault();
 		  			
-		  			// Post the data to the server
-		  			request.post("http://localhost:8080/EWTRestServices/rest/UploadServices/listDeal", {		  				
-		  				data: new FormData(this),		  				
-		  				timeout: 5000,		  				
-		  				headers: {
-		  					'Content-Type': false
-		  				}		  						  				
-		  			}).then(function(response){
-		  				response = JSON.parse(response);
-		  				sessionStorage.setItem('productId',response.dealId);
-		  				StoreState.setRedirectPage('ListDeal');
-		  				window.location.replace('http://localhost:8080/EWTClientUi/Redirect.html');
-		  			},function(error){
-		  				console.log( error);
-		  				dom.byId('errorMessage').innerHTML = "Status Code: " + error.response.status +" Message: " + error.response.data;
-		  			});
+		  			var formData = new FormData();
+		  			
+		  			if(form.validate()) {
+		  				
+		  				var inputElements = event.target.elements;
+						for (var i = 0; i<inputElements.length; i++){
+							console.log(inputElements[i].type + inputElements[i].name + inputElements[i].value );
+							if(inputElements[i].name =="uploadedfiles[]") {
+								for (var j=0, f;f=inputElements[i].files[j];j++) {
+									console.log(f.name);
+									//valiate for size, name and extension
+									if (f.size > 110000) {
+										errorMessage = errorMessage.concat("File size should be less than 1MB.");
+										valid = false;
+										
+									} 
+									if(!extension.test(f.name)){
+										errorMessage = errorMessage.concat("Allowed file types are gif,png and jpeg/jpg only.");
+										valid = false;
+									}
+									
+									if(!fileName.test(f.name)){
+										errorMessage = errorMessage.concat("Only number, letter and _ is allowed for file name.");
+										valid = false;
+									}
+									
+									if(!valid){
+										dom.byId('errorMessage').innerHTML = errorMessage;
+										return false;	
+									}				
+									formData.append(inputElements[i].name,f,f.name);	
+								}
+								
+								
+								 
+							} else if(inputElements[i].name =="price" || inputElements[i].name =="currency"
+								||inputElements[i].name =="briefDescription" || inputElements[i].name == "dealType" || inputElements[i].name == "userId"
+									|| inputElements[i].name == "description" || inputElements[i].name == "dealId"){
+								 formData.append(inputElements[i].name,inputElements[i].value); 
+							}
+						}
+						
+						
+						
+						// Post the data to the server
+			  			 request.post("http://localhost:8080/EWTRestServices/rest/UploadServices/listDeal", {		  				
+			  				data: formData,		  				
+			  				timeout: 5000,		  				
+			  				headers: {
+			  					'Content-Type': false
+			  				}		  						  				
+			  			}).then(function(response){
+			  				response = JSON.parse(response);
+			  				sessionStorage.setItem('productId',response.dealId);
+			  				StoreState.setRedirectPage('ListDeal');
+			  				window.location.replace('http://localhost:8080/EWTClientUi/Redirect.html');
+			  			},function(error){
+			  				console.log( error);
+			  				dom.byId('errorMessage').innerHTML = "Status Code: " + error.response.status +" Message: " + error.response.data;
+			  			}); 
+		  			} else {
+		  				return false;
+		  			}
+		  			
+		  			
+		  			
+		  			
 		  			
 		  			
 		  		}); 
 				
-				Parser.parse();
 				
 				var userDetail = sessionStorage.getItem('userDetail');
 				
@@ -104,29 +162,14 @@
 				"dojo/parser",
 				"widget/Helper","widget/StoreState",
 				"widget/ContainerWidget",
+				"widget/FooterWidget",
 				"dijit/form/Button","dojo/domReady!"
 			], function(parser,Helper,StoreState) {
 				// Invoke the dojo/parser
-				parser.parse();
 				var userDetail = StoreState.getUserDetail();
 				Helper.greetUser(userDetail,document);
 			});
-		</script>
-		
-																
-	
-	
-		
-		<!-- This is for footer  --> 
-		<script>
-			require([
-				"dojo/parser",
-				"widget/FooterWidget",
-			], function(parser) {
-				// Invoke the dojo/parser
-				parser.parse();
-			});
-		</script>
+		</script>															
 		
 	<!-- This is for search box -->
 		<script>
@@ -207,7 +250,7 @@
 	  <table class="pageTable" role="presentation">
 		<tr>
 			<td id="colForm">
-				<form id="myForm" enctype="multipart/form-data">
+				<form data-dojo-type="dijit/form/Form" id="myForm" data-dojo-id="myForm" encType="multipart/form-data" action="" method="">
 				<table>	
 				<tr><td><strong>Items you are selling:</strong></td><td>
 				<select  data-dojo-type="dijit/form/FilteringSelect"
@@ -224,8 +267,8 @@
 				</td></tr>
 				<tr><td valign="top">
 				<strong>Your Price:</strong></td><td>  <input type="text" required="true" name="price" id="price" placeholder="Your price here"
-				data-dojo-type="dijit/form/ValidationTextBox" style="width: 10em;" missingMessage="Ooops! You forgot price."/>
-				*Please note that your price should be at least 3% lower than original price!!</td></tr>
+				data-dojo-type="dijit/form/NumberTextBox" style="width: 10em;" missingMessage="Ooops! You forgot price."/>
+				*Price must be at least 3% lower than original price!!</td></tr>
 				<tr> 
 				<td valign="top"><strong>Please select currency:</strong> </td>
 				<td>
@@ -233,7 +276,7 @@
 				<option value="US">USD</option>
 				<option value="NZ">NZD</option>
 				</select>
-				*Currently you can buy and sell either in NZ or US dollar
+				*Currency conversion rate is subject to EWORLD Trade.
 				</td>
 				</tr>
 				<tr><td valign="top">
@@ -250,6 +293,9 @@
 				<tr><td></td><td>
 				<div id="files" dojoType="dojox.form.uploader.FileList" uploaderId="uploader"></div>
 				</form>
+				</td>
+				<td> <div id="fileErrorMessage"></div></td>
+				</tr>
 				</table>
 			</td>
 			<td id="colImages">
