@@ -173,11 +173,19 @@ function (dojo, dijit, parser, ifrs, Gallery,request, dom, arrayUtil, BuyNowWidg
           imageData.items = [];
           for (var i=0; i< imageUrls.length; i++) {
             var newItem = {};
-            newItem.thumb = imageUrls[i];
-            newItem.large = imageUrls[i]; 
+            if (imageUrls[i]!=""){
+            	newItem.thumb = imageUrls[i];
+                newItem.large = imageUrls[i]; 
+            } else{
+            	newItem.thumb = "./resources/no-image.jpg";
+                newItem.large = "./resources/no-image.jpg"; 
+            	
+            }
+            
             newItem.title = "Image";  
             imageData.items.push(newItem);
           }
+          
            
           // Initialize the data store
           var imageItemStore = new dojo.data.ItemFileReadStore({
