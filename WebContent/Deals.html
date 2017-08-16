@@ -83,7 +83,7 @@
 						label: "Search",
 						onClick:function(){
 							StoreState.storeSearchKeyWord(dijit.byId('productSelect').get('value'));
-						window.location.replace('http://localhost:8080/EWTClientUi/Search.html');	
+						window.location = 'http://localhost:8080/EWTClientUi/Search.html';	
 						}
 					},"searchButtonNode").startup();
 				
@@ -174,6 +174,7 @@
 				
 				// creating on click event
 				var pageNumber = 1;
+				styleActivePageNumber(pageNumber);
 				var newNode;
 				domStyle.set("backward","opacity",0);
 				if(pageNumber >= numPagination) {
@@ -184,7 +185,9 @@
 			    var myObject = {
 			    	id: "myObject",
 			    	onClick: function(event) {
-			    			
+			    		
+			    		removeStylePreviousActivePageNumber(pageNumber);
+			    		
 			    		if (this.id === "backward") {
 			    			if (pageNumber > 1){
 			    			pageNumber -= 1;
@@ -194,6 +197,8 @@
 			    		} else {
 			    			pageNumber = parseInt(this.id);
 			    		}
+			    		
+			    		styleActivePageNumber(pageNumber);
 			    		
 			    		startIndex = (pageNumber -1) * 3; // we only want 3 items in one page for time being but if we want 9 items it would be *9
 			    		getDeals(startIndex);
@@ -237,6 +242,16 @@
 					 var widget = new DealsPageWidget(deal).placeAt(dealContainer);
 				 });
 			});
+	    }
+	    
+	    function styleActivePageNumber(pageNumber){
+	    	var activePageNumber = document.getElementById(pageNumber);
+	    	activePageNumber.setAttribute("style","background-color: #4CAF50;color: white;")
+	    }
+	    
+	    function removeStylePreviousActivePageNumber(pageNumber){
+	    	var previousActivePageNumber = document.getElementById(pageNumber);
+	    	previousActivePageNumber.removeAttribute("style");
 	    }
 	    
 	});

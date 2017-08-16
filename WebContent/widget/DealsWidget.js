@@ -23,7 +23,7 @@ define([
 		},
 		
 		_navigateToDeals: function() {
-			window.location.replace('http://localhost:8080/EWTClientUi/Deals.html');
+			window.location = 'http://localhost:8080/EWTClientUi/Deals.html';
 		}
 	});
 });

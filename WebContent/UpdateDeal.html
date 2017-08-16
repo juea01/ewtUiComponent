@@ -100,7 +100,7 @@
 		  				response = JSON.parse(response);
 		  				sessionStorage.setItem('productId',response.dealId);
 		  				StoreState.setRedirectPage('UpdateDeal');
-		  				window.location.replace('http://localhost:8080/EWTClientUi/Redirect.html');
+		  				window.location = 'http://localhost:8080/EWTClientUi/Redirect.html';
 		  			},function(error){
 		  				console.log( error);
 		  				dom.byId('errorMessage').innerHTML = "Status Code: " + error.response.status +" Message: " + error.response.data;
@@ -191,7 +191,7 @@
 						label: "Search",
 						onClick:function(){
 							StoreState.storeSearchKeyWord(dijit.byId('productSelect').get('value'));
-						window.location.replace('http://localhost:8080/EWTClientUi/Search.html');	
+						window.location = 'http://localhost:8080/EWTClientUi/Search.html';	
 						}
 					},"searchButtonNode").startup();
 				
@@ -230,6 +230,9 @@
 	</div>
 	
 <div class="bodyContentWidget">	
+<div>
+<button onclick="window.history.go(-1); return false;">Back</button>
+</div>
 <div class = "middleAlignedFormBox">
 <h1> Update Deal</h1>
 <p style="font-size: small;"> 

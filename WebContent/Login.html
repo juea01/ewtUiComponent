@@ -64,7 +64,7 @@
 						label: "Search",
 						onClick:function(){
 							StoreState.storeSearchKeyWord(dijit.byId('productSelect').get('value'));
-						window.location.replace('http://localhost:8080/EWTClientUi/Search.html');	
+						window.location = 'http://localhost:8080/EWTClientUi/Search.html';	
 						}
 					},"searchButtonNode").startup();
 				
@@ -149,7 +149,7 @@
   				StoreState.setUserDetail(response);
   				var url = sessionStorage.getItem('previousPageUrl');
   				console.log("This is URl"+url);
-  				window.location.replace(url);
+  				window.location = url;
   			},function(error){
   				console.log( error);
   				dom.byId('errorMessage').innerHTML = "Status Code: " + error.response.status +" Message: " + error.response.data;

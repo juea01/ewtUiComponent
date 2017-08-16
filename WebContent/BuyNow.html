@@ -77,7 +77,7 @@
 						label: "Search",
 						onClick:function(){
 							StoreState.storeSearchKeyWord(dijit.byId('productSelect').get('value'));
-						window.location.replace('http://localhost:8080/EWTClientUi/Search.html');	
+						window.location = 'http://localhost:8080/EWTClientUi/Search.html';	
 						}
 					},"searchButtonNode").startup();
 				
@@ -116,16 +116,25 @@
 		
 	</div>
 	
+ <script>
+ var backButton = document.getElementById("goback");
+ backButton.onclick = function (e){
+	 window.history.go(-1);
+ }
+ </script>
+	
 <div class="bodyContentWidget">	
 <!-- This is for BuyNow -->
+<div>
+<button onclick="window.history.go(-1); return false;">Back</button>
+</div>
 <div class="buyNowWidgetImage">
 <div data-dojo-id="imageItemStore" data-dojo-type="dojo.data.ItemFileReadStore"></div>
 <div id="gallery1" data-dojo-type="dojox.image.Gallery"></div>
 </div>
 <div id="buyNowContainer"></div>
-<button id="editButton" type="button"></button>
- 
- 
+<button id="editButton" type="button" style="display:none"></button>
+  
  <script>
 require(["dojo","dijit/dijit","dojo/parser","dojo/data/ItemFileReadStore","dojox/image/Gallery",
          "dojo/request","dojo/dom","dojo/_base/array", "widget/BuyNowWidget","widget/BuyNowGemJewelleryWidget", "widget/StoreState", "dojo/domReady!"],
