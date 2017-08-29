@@ -63,7 +63,7 @@ define ([
 		
 		sessionStorage.setItem('productId',gemJewelleryId);
 		sessionStorage.setItem('isGemJewelleryId',true);
-		window.location = 'http://localhost:8080/EWTClientUi/BuyNow.html';
+		window.location = 'http://localhost:8080/BuyNow.html';
 		
 	},
 		

@@ -113,7 +113,7 @@
 						label: "Search",
 						onClick:function(){
 							StoreState.storeSearchKeyWord(dijit.byId('productSelect').get('value'));
-						window.location = 'http://localhost:8080/EWTClientUi/Search.html';	
+						window.location = 'http://localhost:8080/Search.html';	
 						}
 					},"searchButtonNode").startup();
 				
@@ -161,13 +161,13 @@
 			function(domConstruct, dom,StoreState){
 			  
 		if (StoreState.getRedirectPage() === 'ListDeal') {	  
-			var message = domConstruct.toDom("Your listing has been successfully posted. Please click <a href='http://localhost:8080/EWTClientUi/BuyNow.html'>here</a> to view your listing.");
+			var message = domConstruct.toDom("Your listing has been successfully posted. Please click <a href='http://localhost:8080/BuyNow.html'>here</a> to view your listing.");
 			domConstruct.place(message, "messageArea");
 		} else if (StoreState.getRedirectPage() === 'Registration') {
-			var message = domConstruct.toDom("Your Registration has been successful. You can start listing deals or buying deals by logging in <a href='http://localhost:8080/EWTClientUi/Login.html'>here</a>.");
+			var message = domConstruct.toDom("Your Registration has been successful. You can start listing deals or buying deals by logging in <a href='http://localhost:8080/Login.html'>here</a>.");
 			domConstruct.place(message, "messageArea");
 		}	else if (StoreState.getRedirectPage() === 'UpdateDeal') {
-			var message = domConstruct.toDom("Your listing has been successfully updated. Please click <a href='http://localhost:8080/EWTClientUi/BuyNow.html'>here</a> to view your listing.");
+			var message = domConstruct.toDom("Your listing has been successfully updated. Please click <a href='http://localhost:8080/BuyNow.html'>here</a> to view your listing.");
 			domConstruct.place(message, "messageArea");
 		}
 			  

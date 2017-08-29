@@ -21,7 +21,7 @@ define([
 		},
 		
 		_navigateToAboutUs: function() {
-			window.location = 'http://localhost:8080/EWTClientUi/AboutUs.html';
+			window.location = 'http://localhost:8080/AboutUs.html';
 			}
 		
 	});

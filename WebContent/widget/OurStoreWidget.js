@@ -22,7 +22,7 @@ define([
 		},
 		
 		_navigateToGemJewellery: function() {
-			window.location = 'http://localhost:8080/EWTClientUi/GemJewellery.html';
+			window.location = 'http://localhost:8080/GemJewellery.html';
 		}
 	});
 });

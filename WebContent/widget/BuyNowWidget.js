@@ -77,7 +77,7 @@ define ([
 		 var editButton = new Button({
 				label: "Edit",
 				onClick: function() {
-					window.location = 'http://localhost:8080/EWTClientUi/UpdateDeal.html';	
+					window.location = 'http://localhost:8080/UpdateDeal.html';	
 				}
 			 },"editButton").startup();
 	}

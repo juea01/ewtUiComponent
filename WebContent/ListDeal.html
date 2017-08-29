@@ -97,7 +97,7 @@
 			  				response = JSON.parse(response);
 			  				sessionStorage.setItem('productId',response.dealId);
 			  				StoreState.setRedirectPage('ListDeal');
-			  				window.location = 'http://localhost:8080/EWTClientUi/Redirect.html';
+			  				window.location = 'http://localhost:8080/Redirect.html';
 			  			},function(error){
 			  				console.log( error);
 			  				dom.byId('errorMessage').innerHTML = "Status Code: " + error.response.status +" Message: " + error.response.data;
@@ -118,7 +118,7 @@
 				
 				if(userDetail=== null) {
 					StoreState.storePageUrl(window.location.href);
-					 window.location = 'http://localhost:8080/EWTClientUi/Login.html'; 
+					 window.location = 'http://localhost:8080/Login.html'; 
 				}
 				userDetail = JSON.parse(userDetail);
 				var userId = registry.byId("userId");
@@ -201,7 +201,7 @@
 						label: "Search",
 						onClick:function(){
 							StoreState.storeSearchKeyWord(dijit.byId('productSelect').get('value'));
-						window.location = 'http://localhost:8080/EWTClientUi/Search.html';	
+						window.location = 'http://localhost:8080/Search.html';	
 						}
 					},"searchButtonNode").startup();
 				
