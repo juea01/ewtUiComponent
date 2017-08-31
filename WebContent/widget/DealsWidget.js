@@ -11,7 +11,7 @@ define([
 	return declare([_WidgetBase, _OnDijitClickMixin, _TemplatedMixin], {
 		//	set our template
 		templateString: template,
-
+		title: "Please check out our deals. Our aim is to bring together buyer, who want to sell/provide quality product/service with less price than competitors, and sellers who want to get quality product/service with less price.",
 		//	some properties
 		baseClass: "dealsWidget",
 

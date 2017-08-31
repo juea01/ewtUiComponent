@@ -34,17 +34,30 @@
 		<!-- This is for header TO DO: do we really need this parser.parse()? --> 
 		<script>
 			require([
+				"dojo/dom",
 				"dojo/parser",
 				"widget/Helper","widget/StoreState",
-				"widget/ContainerWidget",
-				"widget/FooterWidget",
+				"widget/DealsWidget",
+				"widget/EwtAnimationWidget",
+				"widget/OurStoreWidget",
 				"dijit/form/Button",
 				"dojo/domReady!"
-			], function(parser,Helper,StoreState) {
+			], function(dom,parser,Helper,StoreState,DealsWidget,EwtAnimationWidget,OurStoreWidget) {
 				// Invoke the dojo/parser
 				parser.parse();
 				var userDetail = StoreState.getUserDetail();
 				Helper.greetUser(userDetail,document);
+				
+				var listingContainer = dom.byId("listingWidgetContainer");
+				var widget = new EwtAnimationWidget().placeAt(listingContainer);
+				
+				var dealsContainer = dom.byId("dealsWidgetContainer");
+				var widget = new DealsWidget().placeAt(dealsContainer);
+				
+				var outStoreContainer = dom.byId("gemJewelleryWidgetContainer");
+				var widget = new OurStoreWidget().placeAt(outStoreContainer);
+				 
+				
 			});
 		</script>
 		
@@ -90,7 +103,7 @@
 	<body class="claro">
 	<div id="divContent">
 	<!-- This is for header -->
-	<div data-dojo-type="widget/ContainerWidget">
+	<div class="headerWidget">
 		<div class="logo_div">
 			<div>EWorldTradeLogo</div>
 		</div>
@@ -123,35 +136,16 @@
 	
 	<div class="bodyContentWidget">
 	<!-- This is for EWT Animation -->
-	<div data-dojo-type="widget/EwtAnimationWidget">
-	<div id="e1"><h1 >E</h1></div>
-	<div id="w"><h1 >W</h1></div>
-	<div id="o"><h1 >O</h1></div>
-	<div id="o"><h1 >R</h1></div>
-	<div id="o"><h1 >L</h1></div>
-	<div id="o"><h1 >D</h1></div>
-	<div id="o"><h1 >T</h1></div>
-	<div id="o"><h1 >R</h1></div>
-	<div id="o"><h1 >A</h1></div>
-	<div id="o"><h1 >D</h1></div>
-	<div id="e2"><h1 >E</h1></div>
-	<br/><br/><br/><br/>
-	<div id="buyAndSell"><h3>Where you buy and sell!</h3></div>
-	<div id="find"><h3>Find</h3></div>
-	<div id="out"><h3>out</h3></div>
-	<div id="more"><h3>more!</h3></div>
+	<div id="listingWidgetContainer">
 	</div>
 
 <!-- This is for deals -->
-	<div data-dojo-type="widget/DealsWidget">
-		<div><p>Please check out our deals. Our aim is to bring together buyer, who want to sell/provide quality product/service with less price than competitors, and
-		sellers who want to get quality product/service with less price.  </p></div>
+	<div id="dealsWidgetContainer">	
 	</div>
 	
 <!-- This is for deals -->
-<div data-dojo-type="widget/OurStoreWidget">
-	<div><p>Please check out our gems and jewellery section where you can discover gorgeous rings, necklaces from MYANMAR local market for yourself or for your loved ones.  </p></div>
-</div>
+	<div id="gemJewelleryWidgetContainer">	
+	</div>
 	
 	
 	
@@ -160,7 +154,7 @@
 		
 </div>	
 <!-- This is for footer -->
-	<div data-dojo-type="widget/FooterWidget">
+	<div class="footerWidget">
 	
 		
 		<div class="footer_group">

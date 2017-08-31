@@ -11,6 +11,7 @@ define([
 	return declare([_WidgetBase, _OnDijitClickMixin, _TemplatedMixin], {
 		//	set our template
 		templateString: template,
+		title: "Please check out our gems and jewellery section where you can discover gorgeous rings, necklaces from MYANMAR local market for yourself or for your loved ones.",
 
 		//	some properties
 		baseClass: "ourStoreWidget",

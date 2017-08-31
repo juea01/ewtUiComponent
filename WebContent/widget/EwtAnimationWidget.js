@@ -10,8 +10,9 @@ define([
 	return declare([_WidgetBase, _TemplatedMixin], {
 		//	set our template
 		templateString: template,
+		title: "Please check out our listing. Our aim is to bring together buyer, who want to sell/provide quality product/service with less price than competitors, and sellers who want to get quality product/service with less price.",
 		//	some properties
-		baseClass: "animationWidget",
+		baseClass: "dealsWidget",
 
 		postCreate: function(){
 			var domNode = this.domNode;
