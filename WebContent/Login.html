@@ -13,7 +13,6 @@
 		<script>
 			require([
 				"dojo/parser",
-				"widget/ContainerWidget",
 				"dijit/form/Button",
 			], function(parser) {
 				// Invoke the dojo/parser
@@ -21,16 +20,7 @@
 			});
 		</script>
 		
-																
-		<!-- This is for footer  --> 
-		<script>
-			require([
-				"widget/FooterWidget",
-			], function(parser) {
-				// Invoke the dojo/parser
-				parser.parse();
-			});
-		</script>
+															
 	<!-- This is for search box -->
 		<script>
 			require(["dojo","dojo/dom","dijit/form/Button","dojo/dom","dojo/store/Memory","dijit/form/FilteringSelect","widget/StoreState","dojo/store/JsonRest","dojo/domReady!"],
@@ -75,7 +65,7 @@
 	<body class="claro">
 	<div id="divContent">
 	<!-- This is for header -->
-	<div data-dojo-type="widget/ContainerWidget">
+	<div class="headerWidget">
 		<div class="logo_div">
 			<div>EWorldTradeLogo</div>
 		</div>
@@ -169,7 +159,7 @@
 	<div id="divPush"></div>		
 </div>	
 <!-- This is for footer -->
-	<div data-dojo-type="widget/FooterWidget">
+	<div class="footerWidget">
 		<div class="footer_group">
 			<div><a href="AboutUs.html">About EWorldTrade</a></div>
 			<div class="vertical_space">  </div>

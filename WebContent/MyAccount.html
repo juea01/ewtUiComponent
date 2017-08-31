@@ -18,8 +18,6 @@
 				
 	</head>
 	<body class="claro">
-	
-	<!-- This is for header  --> 
 		<script>
 			require([
 				"dojo/parser",
@@ -32,8 +30,6 @@
 				/* basic dijit classes */ 
 				"dijit/form/TextBox", "dijit/form/ValidationTextBox", "dijit/form/DateTextBox",
 				 "dijit/form/RadioButton", "dijit/form/Form",
-				"widget/ContainerWidget",
-				"widget/FooterWidget",
 				"dijit/layout/TabContainer", "dijit/layout/ContentPane",
 				"dojo/domReady!"
 			], function(parser,StoreState,dojo,dom,Button,dom,Memory,FilteringSelect,StoreState,Helper,JsonRest,on, request) {
@@ -133,7 +129,7 @@
 	
 	<div id="divContent">
 	<!-- This is for header -->
-	<div data-dojo-type="widget/ContainerWidget">
+	<div class="headerWidget">
 		<div class="logo_div">
 			<div>EWorldTradeLogo</div>
 		</div>
@@ -347,7 +343,7 @@
 		
 </div>		
 		<!-- This is for footer -->
-	<div data-dojo-type="widget/FooterWidget">
+	<div class="footerWidget">
 		<div class="footer_group">
 			<div><a href="AboutUs.html">About EWorldTrade</a></div>
 			<div class="vertical_space">  </div>

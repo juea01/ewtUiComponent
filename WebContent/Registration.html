@@ -29,8 +29,6 @@ table {border-collapse: collapse; border-spacing: 0px;}
 			require([
 				"dojo/parser",
 				"widget/Helper","widget/StoreState",
-				"widget/ContainerWidget",
-				"widget/FooterWidget",
 				"dijit/form/Button","dojo/domReady!"
 			], function(parser,Helper,StoreState) {
 				// Invoke the dojo/parser
@@ -91,7 +89,7 @@ table {border-collapse: collapse; border-spacing: 0px;}
 <body class="claro">
 	<div id="divContent">
 	<!-- This is for header -->
-		<div data-dojo-type="widget/ContainerWidget">
+		<div class="headerWidget">
 		<div class="logo_div">
 			<div>EWorldTradeLogo</div>
 		</div>
@@ -274,7 +272,7 @@ table {border-collapse: collapse; border-spacing: 0px;}
 <div id="divPush"></div>			
 </div>
 	<!-- This is for footer -->
-	<div data-dojo-type="widget/FooterWidget">
+	<div class="footerWidget">
 		<div class="footer_group">
 			<div><a href="AboutUs.html">About EWorldTrade</a></div>
 			<div class="vertical_space">  </div>

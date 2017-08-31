@@ -12,14 +12,11 @@
 		<script>dojoConfig = {async: false, parseOnLoad: true}</script>
 		<!-- This is for rotating banner -->
 		<script src="dojo/dojo.js"></script>
-		
-	
-	<!-- This is for header  --> 
+		 
 		<script>
 			require([
 				"dojo/parser",
 				"widget/Helper","widget/StoreState",
-				"widget/ContainerWidget",
 				"dojo/domReady!"
 			], function(parser,Helper,StoreState) {
 				// Invoke the dojo/parser
@@ -29,20 +26,6 @@
 			});
 		</script>
 		
-																
-	
-	
-		
-		<!-- This is for footer  --> 
-		<script>
-			require([
-				"dojo/parser",
-				"widget/FooterWidget",
-			], function(parser) {
-				// Invoke the dojo/parser
-				parser.parse();
-			});
-		</script>
 		
 		<!-- This is for search box -->
 		<script>
@@ -88,7 +71,7 @@
 	<body class="claro">
 	<div id="divContent">
 	<!-- This is for header -->
-	<div data-dojo-type="widget/ContainerWidget">
+	<div class="headerWidget">
 		<div class="logo_div">
 			<div>EWorldTradeLogo</div>
 		</div>
@@ -218,7 +201,7 @@ function (dojo, dijit, parser, ifrs, Gallery,request, dom, arrayUtil, BuyNowWidg
 <div id="divPush"></div>			
 </div>	
 <!-- This is for footer -->
-	<div data-dojo-type="widget/FooterWidget">
+	<div class="footerWidget">
 		<div class="footer_group">
 			<div><a href="AboutUs.html">About EWorldTrade</a></div>
 			<div class="vertical_space">  </div>
