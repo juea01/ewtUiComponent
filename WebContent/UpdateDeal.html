@@ -32,6 +32,8 @@
 				Parser.parse();
 				
 				var form = dijit.byId("myForm");
+				var extension = /.gif|.png|.jpeg|.jpg/;
+			     var fileName = /^[a-z_?0-9]+\.(png|jpe?g|gif)$/i;
 				
 				//prepoulate form with deal data
 				var dealDetail = StoreState.getDealDetail();
@@ -58,53 +60,91 @@
 				this.parentElement.remove();
 				
 			});
-								
+							
 				
-				on(form,"submit", function(event){
+			     on(form,"submit", function(event){
 		  			//prevent the page form navigating after submit
 		  			event.stopPropagation();
 		  			event.preventDefault();
 		  			
 		  			
-		  		//loop through form elements to append to newly created FormData()
-		  			//append form data, would there be a way to send form data as native type (multipart/form-data) in dojo
+		  			var errorMessage = "";
+					dom.byId('errorMessage').innerHTML = "";
+					var valid = true;
+		  		
 		  			var formData = new FormData();
-					var inputElements = event.target.elements;
-					for (var i = 0; i<inputElements.length; i++){
-						console.log(inputElements[i].type + inputElements[i].name + inputElements[i].value );
-						if(inputElements[i].name =="uploadedfiles[]") {
-							for (var j=0, f;f=inputElements[i].files[j];j++) {
-								formData.append(inputElements[i].name,f,f.name);
-								console.log(f.name);
-							}
-						} else if(inputElements[i].name =="price" || inputElements[i].name =="currency"
+		  			
+		  			if(form.validate()) {
+		  				
+		  			//loop through form elements to append to newly created FormData()
+			  			//append form data, would there be a way to send form data as native type (multipart/form-data) in dojo
+		  				var inputElements = event.target.elements;
+						for (var i = 0; i<inputElements.length; i++){
+							console.log(inputElements[i].type + inputElements[i].name + inputElements[i].value );
+							if(inputElements[i].name =="uploadedfiles[]") {
+								for (var j=0, f;f=inputElements[i].files[j];j++) {
+									console.log(f.name);
+									//valiate for size, name and extension
+									if (f.size > 1100000) {
+										errorMessage = errorMessage.concat("File size should be less than 1MB.");
+										valid = false;
+										
+									} 
+									if(!extension.test(f.name)){
+										errorMessage = errorMessage.concat("Allowed file types are gif,png and jpeg/jpg only.");
+										valid = false;
+									}
+									
+									if(!fileName.test(f.name)){
+										errorMessage = errorMessage.concat("Only number, letter and _ is allowed for file name.");
+										valid = false;
+									}
+									
+									if(!valid){
+										dom.byId('errorMessage').innerHTML = errorMessage;
+										return false;	
+									}				
+									formData.append(inputElements[i].name,f,f.name);	
+								}
+								
+								
+								 
+							} else if(inputElements[i].name =="price" || inputElements[i].name =="currency"
 								||inputElements[i].name =="briefDescription" || inputElements[i].name == "dealType" || inputElements[i].name == "userId"
-								|| inputElements[i].name == "description" || inputElements[i].name == "dealId"){
-							 formData.append(inputElements[i].name,inputElements[i].value); 
+									|| inputElements[i].name == "description" || inputElements[i].name == "dealId"){
+								 formData.append(inputElements[i].name,inputElements[i].value); 
+							}
 						}
-					}
+						
+						 formData.append("existingImages[]",existingImages);
+						
+							// Post the data to the server
+			  			 request.post("http://localhost:8080/EWTRestServices/rest/DealServices/updateDeal", {		  				
+			  				data: formData,		  				
+			  				timeout: 5000,		  				
+			  				headers: {
+			  					'Content-Type': false
+			  				}		  						  				
+			  			}).then(function(response){
+			  				response = JSON.parse(response);
+			  				sessionStorage.setItem('productId',response.dealId);
+			  				StoreState.setRedirectPage('UpdateDeal');
+			  				window.location = 'http://localhost:8080/Redirect.html';
+			  			},function(error){
+			  				console.log( error);
+			  				dom.byId('errorMessage').innerHTML = "Status Code: " + error.response.status +" Message: " + error.response.data;
+			  			}); 
+		  			} else {
+		  				return false;
+		  			}
+		  		
+		  			
 					
-					 formData.append("existingImages[]",existingImages);
 					/* arrayUtil.forEach(existingImages, function(data){
 						 formData.append("existingImages[]",null,data);
 					}); */
 		  			
-		  			// Post the data to the server
-		  			 request.post("http://localhost:8080/EWTRestServices/rest/DealServices/updateDeal", {		  				
-		  				data: formData,		  				
-		  				timeout: 5000,		  				
-		  				headers: {
-		  					'Content-Type': false
-		  				}		  						  				
-		  			}).then(function(response){
-		  				response = JSON.parse(response);
-		  				sessionStorage.setItem('productId',response.dealId);
-		  				StoreState.setRedirectPage('UpdateDeal');
-		  				window.location = 'http://localhost:8080/Redirect.html';
-		  			},function(error){
-		  				console.log( error);
-		  				dom.byId('errorMessage').innerHTML = "Status Code: " + error.response.status +" Message: " + error.response.data;
-		  			}); 
+		  		
 		  			
 		  			
 		  		}); 
