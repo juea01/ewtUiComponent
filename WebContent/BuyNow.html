@@ -12,25 +12,17 @@
 		<script>dojoConfig = {async: false, parseOnLoad: true}</script>
 		<!-- This is for rotating banner -->
 		<script src="dojo/dojo.js"></script>
-		 
-		<script>
-			require([
-				"dojo/parser",
-				"widget/Helper","widget/StoreState",
-				"dojo/domReady!"
-			], function(parser,Helper,StoreState) {
-				// Invoke the dojo/parser
-				parser.parse();
-				var userDetail = StoreState.getUserDetail();
-				Helper.greetUser(userDetail,document);
-			});
-		</script>
-		
 		
 		<!-- This is for search box -->
 		<script>
-			require(["dojo","dojo/dom","dijit/form/Button","dojo/dom","dojo/store/Memory","dijit/form/FilteringSelect","widget/StoreState","dojo/store/JsonRest","dojo/domReady!"],
-					function(dojo,dom,Button,dom,Memory,FilteringSelect,StoreState,JsonRest){
+			require(["dojo","dojo/dom","dojo/parser","dijit/form/Button","dojo/dom","dojo/store/Memory","dijit/form/FilteringSelect","widget/Helper",
+			         "widget/StoreState","dojo/store/JsonRest","dijit/dijit","dojo/data/ItemFileReadStore","dojox/image/Gallery",
+			         "dojo/request","dojo/_base/array", "widget/BuyNowWidget","widget/BuyNowGemJewelleryWidget","dojo/domReady!"],
+					function(dojo,dom,parser,Button,dom,Memory,FilteringSelect,Helper,StoreState,JsonRest,dijit, ifrs, Gallery,request, arrayUtil, BuyNowWidget, BuyNowGemJewelleryWidget){
+				
+				parser.parse();
+					var userDetail = StoreState.getUserDetail();
+					Helper.greetUser(userDetail,document);
 				
 					var store = new JsonRest({
 						target: "http://localhost:8080/EWTRestServices/rest/UtilityServices/productLists"
@@ -63,9 +55,79 @@
 						window.location = 'http://localhost:8080/Search.html';	
 						}
 					},"searchButtonNode").startup();
+					
+					
+					
+					StoreState.storePageUrl(window.location.href);
+					
+					 var productId = sessionStorage.getItem('productId');
+					 var isGemJewelleryId = sessionStorage.getItem('isGemJewelleryId');
+					 var url = "http://localhost:8080/EWTRestServices/rest/DealServices/deal?dealId=";
+					 
+					 if(isGemJewelleryId === "true") {
+						 url = "http://localhost:8080/EWTRestServices/rest/GemJewelleryServices/gemJewellery?gemJewelleryId=";
+					 }
+					 
+					 request (url+productId, {
+						 
+					 }).then(function(result){
+						 StoreState.setDealDetail(result);
+						 result = JSON.parse(result);
+						 var buyNowContainer = dom.byId("buyNowContainer");
+					     var widget = (isGemJewelleryId === "true") ? new BuyNowGemJewelleryWidget(result).placeAt(buyNowContainer) : new BuyNowWidget(result).placeAt(buyNowContainer);	     
+
+				         // Define the attribute names used to access the items in the data store
+				        
+				         var itemNameMap = {
+				             imageThumbAttr: "thumb",
+				             imageLargeAttr: "large"
+				         };
+
+				         // Define the request, with no query, and a count of 20, so 20 items will be
+				         // requested with each request
+				         var request = {
+				             query: {},
+				             count: 20
+				         };
+				          
+				          
+				          var urls = result.images;
+				          var imageUrls = urls.toString().split(",");   
+				          
+				     	  // Build an array of image items for the data store
+				          var imageData = {};
+				          imageData.items = [];
+				          for (var i=0; i< imageUrls.length; i++) {
+				            var newItem = {};
+				            if (imageUrls[i]!=""){
+				            	newItem.thumb = imageUrls[i];
+				                newItem.large = imageUrls[i]; 
+				            } else{
+				            	newItem.thumb = "./resources/no-image.jpg";
+				                newItem.large = "./resources/no-image.jpg"; 
+				            	
+				            }
+				            
+				            newItem.title = "Image";  
+				            imageData.items.push(newItem);
+				          }
+				          
+				           
+				          // Initialize the data store
+				          var imageItemStore = new dojo.data.ItemFileReadStore({
+				            identifier: 'title',
+				            label: 'Images',
+				            data: imageData
+				          }); 
+				           
+				          dijit.byId('gallery1').setDataStore(imageItemStore, request, itemNameMap);           
+					 });
+					
 				
 					});
 		</script>
+		
+
 				
 	</head>
 	<body class="claro">
@@ -116,85 +178,7 @@
 <div id="gallery1" data-dojo-type="dojox.image.Gallery"></div>
 </div>
 <div id="buyNowContainer"></div>
-<button id="editButton" type="button" style="display:none"></button>
-  
- <script>
-require(["dojo","dijit/dijit","dojo/parser","dojo/data/ItemFileReadStore","dojox/image/Gallery",
-         "dojo/request","dojo/dom","dojo/_base/array", "widget/BuyNowWidget","widget/BuyNowGemJewelleryWidget", "widget/StoreState", "dojo/domReady!"],
-function (dojo, dijit, parser, ifrs, Gallery,request, dom, arrayUtil, BuyNowWidget, BuyNowGemJewelleryWidget, StoreState) {
-	
-	StoreState.storePageUrl(window.location.href);
-	
-	 var productId = sessionStorage.getItem('productId');
-	 var isGemJewelleryId = sessionStorage.getItem('isGemJewelleryId');
-	 var url = "http://localhost:8080/EWTRestServices/rest/DealServices/deal?dealId=";
-	 
-	 if(isGemJewelleryId === "true") {
-		 url = "http://localhost:8080/EWTRestServices/rest/GemJewelleryServices/gemJewellery?gemJewelleryId=";
-	 }
-	 
-	 request (url+productId, {
-		 
-	 }).then(function(result){
-		 StoreState.setDealDetail(result);
-		 result = JSON.parse(result);
-		 var buyNowContainer = dom.byId("buyNowContainer");
-	     var widget = (isGemJewelleryId === "true") ? new BuyNowGemJewelleryWidget(result).placeAt(buyNowContainer) : new BuyNowWidget(result).placeAt(buyNowContainer);	     
-
-         // Define the attribute names used to access the items in the data store
-         parser.parse();
-         
-         var itemNameMap = {
-             imageThumbAttr: "thumb",
-             imageLargeAttr: "large"
-         };
-
-         // Define the request, with no query, and a count of 20, so 20 items will be
-         // requested with each request
-         var request = {
-             query: {},
-             count: 20
-         };
-          
-          
-          var urls = result.images;
-          var imageUrls = urls.toString().split(",");   
-          
-     	  // Build an array of image items for the data store
-          var imageData = {};
-          imageData.items = [];
-          for (var i=0; i< imageUrls.length; i++) {
-            var newItem = {};
-            if (imageUrls[i]!=""){
-            	newItem.thumb = imageUrls[i];
-                newItem.large = imageUrls[i]; 
-            } else{
-            	newItem.thumb = "./resources/no-image.jpg";
-                newItem.large = "./resources/no-image.jpg"; 
-            	
-            }
-            
-            newItem.title = "Image";  
-            imageData.items.push(newItem);
-          }
-          
-           
-          // Initialize the data store
-          var imageItemStore = new dojo.data.ItemFileReadStore({
-            identifier: 'title',
-            label: 'Images',
-            data: imageData
-          }); 
-           
-          dijit.byId('gallery1').setDataStore(imageItemStore, request, itemNameMap);           
-		 
-	 });
-	 
- });
-
-</script>
-
-	 
+<button id="editButton" type="button" style="display:none"></button>	 
 	
 </div>
 	
