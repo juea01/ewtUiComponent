@@ -134,22 +134,143 @@
 	<!-- This is for Rotating banner -->
 	<div id="myAutoRotator" class="rotator"></div>
 	
-	<div class="bodyContentWidget">
-	<!-- This is for EWT Animation -->
-	<div id="listingWidgetContainer">
-	</div>
+<div class="bodyContentWidget">	
+<div id="dealContainer"></div>
+<div id="paginationWrapper">
+ <div id="pagination">
+</div>
+</div>
+ 
+<script>
+	require(["dojo","dojo/on","dojo/dom-construct","dojo/store/JsonRest","dojo/dom","dojo/dom-style","dojo/_base/array", "widget/DealsPageWidget","dijit/form/Button", "dojo/parser","dojo/mouse","dojo/_base/lang","widget/StoreState","dojo/query","dojo/domReady!"], 
+			function(dojo,on,domconstruct,JsonRest,dom,domStyle,arrayUtil,DealsPageWidget,button,parser,mouse,lang,StoreState) {						
+		
+		StoreState.storePageUrl(window.location.href);
+		
+		var totalItems = 0;
+		var startIndex = (StoreState.getDealsStartIndex() != null ? StoreState.getDealsStartIndex() : 0);
+		console.log("Start Index"+ startIndex);
+		var store = new JsonRest({
+			target: "http://localhost:8080/EWTRestServices/rest/DealServices/deals"
+		});
+				 
+		var results = store.query({
+			start: startIndex,
+			count: 9
+		});
+		
+		results.then(function (data) {
+		    // You can access the response data here
+		    var dealContainer = dom.byId("dealContainer");			 
+			 arrayUtil.forEach(data, function(deal){
+				 var widget = new DealsPageWidget(deal).placeAt(dealContainer);
+			 })
+		    results.total.then(function (total) {
+		        // You can access both data and total here
+		    	totalItems = total;
+		        
+		    	// create pagination button dynamically
+			    var pagination = dom.byId("pagination");
+			    var numPagination = totalItems/9; // we only want 9 items in one page for time being but if we want 9 items it would be *9
+			    
+			    var backward = domconstruct.create("div",{id: "backward", class:"clickMe", innerHTML: "&lt;&lt; Previous"},pagination);	 
+			    //TODO: Currenlty pagination logic is only up to 9 page will need to find out how to do after 9 page.
+			    if (numPagination > 9) {
+			    	numPagination = 9;
+			    	}
+			    
+				for (var i = 0; i<numPagination; i++) {
+					domconstruct.create("div",{id: i+1, class:"clickMe", innerHTML: i+1},pagination);
+				}
+				var forward = domconstruct.create("div",{id: "forward", class:"clickMe", innerHTML: "Next &gt;&gt;"},pagination);
+				
+				// creating on click event
+				var pageNumber = 1;
+				styleActivePageNumber(pageNumber);
+				var newNode;
+				domStyle.set("backward","opacity",0);
+				if(pageNumber >= numPagination) {
+	    			domStyle.set("forward","opacity",0);
+	    		} else {
+	    			domStyle.set("forward","opacity",1);
+	    		}	
+			    var myObject = {
+			    	id: "myObject",
+			    	onClick: function(event) {
+			    		
+			    		removeStylePreviousActivePageNumber(pageNumber);
+			    		
+			    		if (this.id === "backward") {
+			    			if (pageNumber > 1){
+			    			pageNumber -= 1;
+			    			}
+			    		} else if (this.id === "forward") {
+			    		 pageNumber += 1;	
+			    		} else {
+			    			pageNumber = parseInt(this.id);
+			    		}
+			    		
+			    		styleActivePageNumber(pageNumber);
+			    		
+			    		startIndex = (pageNumber -1) * 9; // we only want 9 items in one page for time being but if we want 9 items it would be *9
+			    		getDeals(startIndex);
+			    		
+			    		if(pageNumber === 1) {
+			    			domStyle.set("backward","opacity",0);
+			    		} else {
+			    			domStyle.set("backward","opacity",1);
+			    		}
+			    		
+			    		if(pageNumber >= numPagination) {
+			    			domStyle.set("forward","opacity",0);
+			    		} else {
+			    			domStyle.set("forward","opacity",1);
+			    		}
+			    		
+						
+			    	}
+			    };
+			 	
+			    on(pagination,".clickMe:click",myObject.onClick);
+		    });
+		}); 
+		
 
-<!-- This is for deals -->
-	<div id="dealsWidgetContainer">	
-	</div>
+	    // Button event to page back;
+	    function getDeals(startIndex){
+	    	StoreState.storeDealsStartIndex(startIndex);
+	    	var dealContainer = dom.byId("dealContainer");
+	        if(dealContainer){
+	          while(dealContainer.firstChild){
+	        	  dealContainer.removeChild(dealContainer.firstChild);
+	          }
+	        }
+	      // If we haven't hit the end of the pages yet, allow for requesting another.
+	    	store.query({
+				start: startIndex,
+				count: 9
+			}).then(function (deals){
+				 arrayUtil.forEach(deals, function(deal){
+					 var widget = new DealsPageWidget(deal).placeAt(dealContainer);
+				 });
+			});
+	    }
+	    
+	    function styleActivePageNumber(pageNumber){
+	    	var activePageNumber = document.getElementById(pageNumber);
+	    	activePageNumber.setAttribute("style","background-color: #4CAF50;color: white;")
+	    }
+	    
+	    function removeStylePreviousActivePageNumber(pageNumber){
+	    	var previousActivePageNumber = document.getElementById(pageNumber);
+	    	previousActivePageNumber.removeAttribute("style");
+	    }
+	    
+	});
+    
+	</script>	
 	
-<!-- This is for deals -->
-	<div id="gemJewelleryWidgetContainer">	
-	</div>
-	
-	
-	
-</div>	
+</div>
 	<div id="divPush"></div>
 		
 </div>	
