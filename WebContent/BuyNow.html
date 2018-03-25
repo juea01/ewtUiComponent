@@ -171,14 +171,29 @@
 <div class="bodyContentWidget">	
 <!-- This is for BuyNow -->
 <div>
-<button onclick="window.history.go(-1); return false;">Back</button>
+<button onclick="window.history.go(-1); return false;" class="standardButton">Back</button>
 </div>
 <div class="buyNowWidgetImage">
 <div data-dojo-id="imageItemStore" data-dojo-type="dojo.data.ItemFileReadStore"></div>
 <div id="gallery1" data-dojo-type="dojox.image.Gallery"></div>
 </div>
 <div id="buyNowContainer"></div>
-<button id="editButton" type="button" style="display:none"></button>	 
+<button id="editButton" type="button" style="display:none"></button>	
+<table>
+<tr> 
+<td> <label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Current Bid:</label><input  type="text" name="currentBid" readonly/></td>
+</tr>
+<tr> 
+<td> <label> &nbsp;Next Minimum Bid:</label><input  type="text" name="nextMinimumBid"/></td><td><button type="button" class="standardButton">Bid</button></td>
+</tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td><button type="button" class="standardButton">Buy Now</button></td></tr>
+</table>
+
+
+
+
+ 
 	
 </div>
 	

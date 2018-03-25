@@ -39,6 +39,11 @@ For header
   height:35px;
 }	
 
+.standardButton{
+       width:95px;
+       height:25px;
+}
+
 .login_Supplier_Wrapper_div{
 	float:left;
 	margin-left:15%;
