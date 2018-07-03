@@ -68,9 +68,11 @@
 						 url = "http://localhost:8080/EWTRestServices/rest/GemJewelleryServices/gemJewellery?gemJewelleryId=";
 					 }
 					 
+					 console.log("Request Images ID");
 					 request (url+productId, {
 						 
 					 }).then(function(result){
+						 console.log("Response Received");
 						 StoreState.setDealDetail(result);
 						 result = JSON.parse(result);
 						 var buyNowContainer = dom.byId("buyNowContainer");
@@ -111,7 +113,7 @@
 				            newItem.title = "Image";  
 				            imageData.items.push(newItem);
 				          }
-				          
+				          console.log("Initialize the data store");
 				           
 				          // Initialize the data store
 				          var imageItemStore = new dojo.data.ItemFileReadStore({
@@ -119,14 +121,22 @@
 				            label: 'Images',
 				            data: imageData
 				          }); 
-				           
+				          console.log("Set Data Store"); 
 				          dijit.byId('gallery1').setDataStore(imageItemStore, request, itemNameMap);           
 					 });
 					
 				
 					});
 		</script>
-		
+	
+	<!-- Bidding functionality -->
+	  <script type="text/javascript" src="../../dojo/dojo.js"></script>
+    <script type="text/javascript" src="bidding.js"></script>
+      <script type="text/javascript">
+        var config = {
+            contextPath: (new String(''))
+        };
+    </script>
 
 				
 	</head>
@@ -181,13 +191,13 @@
 <button id="editButton" type="button" style="display:none"></button>	
 <table>
 <tr> 
-<td> <label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Current Bid:</label><input  type="text" name="currentBid" readonly/></td>
+<td> <label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Current Bid:</label><input  type="text" name="currentBid" readonly id="currentBid"/></td>
 </tr>
 <tr> 
-<td> <label> &nbsp;Next Minimum Bid:</label><input  type="text" name="nextMinimumBid"/></td><td><button type="button" class="standardButton">Bid</button></td>
+<td> <label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Next Minimum Bid:</label><input  type="text" id="biddingValue" name="biddingValue"/></td><td><button type="button" class="standardButton" id="bidNowNode">Bid</button></td>
 </tr>
 <tr><td>&nbsp;</td></tr>
-<tr><td><button type="button" class="standardButton">Buy Now</button></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="standardButton">Buy Now</button></td></tr>
 </table>
 
 

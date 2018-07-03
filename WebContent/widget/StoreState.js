@@ -69,6 +69,14 @@ define([
 	
 	getUserDetail: function(){
 		return sessionStorage.getItem('userDetail');
+	},
+	
+	setProductId: function(){
+		return sessionStorage.setItem('productId');
+	},
+	
+	getProductId: function(){
+		return sessionStorage.getItem('productId');
 	}
 	
 	};
